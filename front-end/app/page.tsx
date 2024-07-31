@@ -67,7 +67,7 @@ export default function Home() {
             </div>
           ))}
       </div>
-      <footer className="text-center p-4 text-white bg-gray-800">
+      <footer className="text-center p-4 text-black bg-white py-50 w-full">
         {" "}
         Copyright © 2024 Cậu Chủ Shop
       </footer>

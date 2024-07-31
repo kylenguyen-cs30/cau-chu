@@ -71,7 +71,6 @@ def add_pet():  # Corrected function name
 @app.route("/pets")
 def list_pets():
     pets = Pet.query.all()
-    # return "\n".join([str(pet) for pet in pets])
     pets_list = [
         {
             "name": pet.name,
