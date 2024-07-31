@@ -1,9 +1,11 @@
-from flask import Flask, jsonify  # Corrected 'Flask' capitalization
-from flask_sqlalchemy import SQLAlchemy  # Corrected 'SQLAlchemy' capitalization
+from flask import Flask, jsonify
+from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 
 # from flask_migrate import Migrate
 
 app = Flask(__name__)
+CORS(app)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"  # Corrected config key
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False  # Avoids SQLAlchemy warning
 db = SQLAlchemy(app)
@@ -69,7 +71,20 @@ def add_pet():  # Corrected function name
 @app.route("/pets")
 def list_pets():
     pets = Pet.query.all()
-    return "\n".join([str(pet) for pet in pets])
+    # return "\n".join([str(pet) for pet in pets])
+    pets_list = [
+        {
+            "name": pet.name,
+            "type": pet.type,
+            "breed": pet.breed,
+            "age": pet.age,
+            "price": pet.price,
+            "description": pet.description,
+            "imageFilename": pet.imageFilename,
+        }
+        for pet in pets
+    ]
+    return jsonify(pets_list)
 
 
 if __name__ == "__main__":
