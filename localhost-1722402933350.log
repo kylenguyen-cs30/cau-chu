@@ -1,0 +1,14 @@
+page.tsx:32 []
+page.tsx:32 
+page.tsx:26 Fetched data (2) [{…}, {…}]
+page.tsx:26 Fetched data (2) [{…}, {…}]
+page.tsx:32 (2) [{…}, {…}]
+page.tsx:32 [object Object],[object Object]
+image:1 
+        
+        
+       GET http://localhost:3000/_next/image?url=%2Fimages%2Fpets%2Fbuddy.jpg&w=1080&q=75 400 (Bad Request)
+image:1 
+        
+        
+       GET http://localhost:3000/_next/image?url=%2Fimages%2Fpets%2Fbeauty.jpeg&w=1080&q=75 400 (Bad Request)

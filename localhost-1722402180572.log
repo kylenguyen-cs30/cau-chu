@@ -1,0 +1,6 @@
+page.tsx:26 Fetched data (2) [{…}, {…}]
+page.tsx:26 Fetched data (2) [{…}, {…}]
+image:1 
+        
+        
+       GET http://localhost:3000/_next/image?url=%2Fimages%2Fpets%2Fundefined&w=1080&q=75 400 (Bad Request)
