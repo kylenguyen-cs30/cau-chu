@@ -60,12 +60,34 @@ def add_pet():  # Corrected function name
         description="Friendly Lazy",
         imageFilename="beauty.jpg",
     )
+    new_pet3 = Pet(
+        name="Moon",
+        type="Cat",
+        breed="No Idea",
+        age=3,
+        price=399.99,
+        description="Friendly and lazy",
+        imageFilename="moon.jpg",
+    )
+    new_pet4 = Pet(
+        name="Mochi",
+        type="Cat",
+        breed="English Black",
+        age=3,
+        price=599.99,
+        description="Angry but Beautiful",
+        imageFilename="mochi.jpg",
+    )
 
     db.session.add(new_pet)
     db.session.add(new_pet2)
+    db.session.add(new_pet3)
+    db.session.add(new_pet4)
 
     db.session.commit()
-    return f"Added {new_pet} and {new_pet2} ", 200  # Updated string formatting
+    return (
+        f"Added {new_pet}, {new_pet2} , {new_pet3} and {new_pet4}",
+    )  # Updated string formatting
 
 
 @app.route("/pets")
