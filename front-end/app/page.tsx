@@ -33,23 +33,20 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <header className="text-center p-4 text-3xl font-bold text-black bg-gray-80">
+      <header className="text-center p-4 pb-60 text-4xl font-bold text-black bg-gray-80">
         Welcome to Cậu Chủ Shop
       </header>
       <div className="flex flex-grow grid grid-cols-3 gap-4 p-4">
         {pets.length > 0 &&
           pets.map((pet, index) => (
-            <div
-              key={index}
-              className="card bg-white shadow-lg rounded p-4 text-black"
-            >
+            <div key={index} className="card bg-white  rounded p-4 text-black">
               {pet.imageFilename ? (
                 <Image
                   src={`/images/pets/${pet.imageFilename}`}
                   alt={pet.name}
-                  width={500}
+                  width={300}
                   height={300}
-                  className="object-cover rounded"
+                  className="object-cover  rounded"
                 />
               ) : (
                 <div>No Image Available</div> // Placeholder in case of no image
