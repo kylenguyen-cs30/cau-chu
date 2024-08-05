@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from typing import Optional
 
 # from flask_migrate import Migrate
 
@@ -23,6 +24,24 @@ class Pet(db.Model):  # Corrected class names and `db.Model`
     description = db.Column(db.Text, nullable=True)
     imageFilename = db.Column(db.Text, nullable=False)
 
+    def __init__(
+        self,
+        name: str,
+        type: str,
+        breed: str,
+        age: int,
+        price: float,
+        description: Optional[str],
+        imageFilename: str,
+    ) -> None:
+        self.name = name
+        self.type = type
+        self.breed = breed
+        self.age = age
+        self.price = price
+        self.description = description
+        self.imageFilename = imageFilename
+
     def __repr__(self):
         return f"<Pet {self.name}>"  # Updated to reflect the correct class name
 
@@ -40,7 +59,7 @@ def home():
     )  # Improved message consistency
 
 
-@app.route("/add_pet", methods=["GET", "POST"])
+@app.route("/add_pet")
 def add_pet():  # Corrected function name
     new_pet = Pet(
         name="Buddy",

@@ -51,6 +51,7 @@ export default function Home() {
               ) : (
                 <div>No Image Available</div> // Placeholder in case of no image
               )}
+              <p>Name : {pet.name}</p>
               <p>Type: {pet.type}</p>
               <p>Breed: {pet.breed}</p>
               <p>Age: {pet.age} years</p>
