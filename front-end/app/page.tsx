@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import AddPet from "./components/addpet";
 
 interface Pet {
   imageFilename: string;
@@ -36,9 +37,13 @@ export default function Home() {
       <header className="text-center p-4 pb-60 text-4xl font-bold text-black bg-gray-80">
         Welcome to Cậu Chủ Shop
       </header>
-      <button className="mt-4 w-1/4 bg-blue-500 hover:bg-teal-900 text-white front-bold py-2 px-4 rounded">
-        Add your pet
-      </button>
+      {/* <button className="mt-4 w-1/4 bg-blue-500 hover:bg-teal-900 text-white front-bold py-2 px-4 rounded"> */}
+      {/*   Add your pet */}
+      {/* </button> */}
+
+      <div className="btn bg-blue-50 rounded">
+        <AddPet></AddPet>
+      </div>
       <div className="flex flex-grow grid grid-cols-3 gap-4 p-4">
         {pets.length > 0 &&
           pets.map((pet, index) => (
