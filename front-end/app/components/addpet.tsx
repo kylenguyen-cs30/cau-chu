@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Modal from "react-modal";
-import { createPortal } from "react-dom";
+import PortalModal from "./portalModal";
 
 const AddPetModal = () => {
   const [name, setName] = useState("");
@@ -47,7 +46,13 @@ const AddPetModal = () => {
   };
   return (
     <div>
-      <Modal>
+      <button
+        onClick={handleOpen}
+        className="rounded mt-4 w-1/4 bg-blue-500 hover:bg-teal-900 text-white font-bold py-2 px-4 "
+      >
+        Add your pet
+      </button>
+      <PortalModal isOpen={isOpen} onClose={handleClose}>
         {/* input field  */}
         <form onSubmit={handleSubmit}>
           <label>Name</label>
@@ -71,7 +76,7 @@ const AddPetModal = () => {
           <input
             type="number"
             value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            onChange={(e) => setPrice(parseInt(e.target.value))}
           />
           <label>Breed:</label>
 
@@ -82,7 +87,11 @@ const AddPetModal = () => {
           />
           <label>Age(months): </label>
 
-          <input />
+          <input
+            type="number"
+            value={age}
+            onChange={(e) => setAge(parseInt(e.target.value))}
+          />
           <label>Description: </label>
 
           <input
@@ -95,8 +104,9 @@ const AddPetModal = () => {
 
           <button type="submit">Register</button>
         </form>
-        <button onClick={handleClose}>Close</button>
-      </Modal>
+      </PortalModal>
     </div>
   );
 };
+
+export default AddPetModal;
