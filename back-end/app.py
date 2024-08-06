@@ -48,6 +48,14 @@ class Pet(db.Model):  # Corrected class names and `db.Model`
         return f"<Pet {self.name}>"  # Updated to reflect the correct class name
 
 
+# Helper function to check if uploaded files are allowed_file or not
+def allowed_file(filename):
+    return (
+        "." in filename
+        and filename.rsplit(".", 1)[1].lower() in app.config["ALLOWED_EXTENSIONS"]
+    )
+
+
 # @app.before_first_request
 @app.before_request
 def create_tables():
@@ -61,59 +69,40 @@ def home():
     )  # Improved message consistency
 
 
-# @app.route("/add_pet")
-# def add_pet():  # Corrected function name
-#     new_pet = Pet(
-#         name="Buddy",
-#         type="Dog",
-#         breed="Golden Retriever",
-#         age=3,
-#         price=499.99,
-#         description="Friendly and energetic",
-#         imageFilename="buddy.jpg",
-#     )
-#     new_pet2 = Pet(
-#         name="Beauty",
-#         type="Cat",
-#         breed="English Tiger",
-#         age=2,
-#         price=499.99,
-#         description="Friendly Lazy",
-#         imageFilename="beauty.jpg",
-#     )
-#     new_pet3 = Pet(
-#         name="Moon",
-#         type="Cat",
-#         breed="No Idea",
-#         age=3,
-#         price=399.99,
-#         description="Friendly and lazy",
-#         imageFilename="moon.jpg",
-#     )
-#     new_pet4 = Pet(
-#         name="Mochi",
-#         type="Cat",
-#         breed="English Black",
-#         age=3,
-#         price=599.99,
-#         description="Angry but Beautiful",
-#         imageFilename="mochi.jpg",
-#     )
-#
-#     db.session.add(new_pet)
-#     db.session.add(new_pet2)
-#     db.session.add(new_pet3)
-#     db.session.add(new_pet4)
-#
-#     db.session.commit()
-#     return (
-#         f"Added {new_pet}, {new_pet2} , {new_pet3} and {new_pet4}",
-#     )  # Updated string formatting
-#
-@app.route("/add_pet", methods["POST"])
+@app.route("/add_pet", methods=["POST"])
 def add_pet():
     name = request.form.get("name")
     type = request.form.get("type")
+    breed = request.form.get("breed")
+    age = int(request.form.get("age"))
+    price = float(request.form.get("price"))
+    description = request.form.get("description")
+    image = request.files.get("image")
+
+    if image and allowed_file(image.filename):
+        filename = secure_filename(image.filename)
+        image.save(
+            os.path.join(app.config["UPLOAD_FOLDER"], filename)
+        )  # image file saving in the backend folder
+        image_url = os.path.join(
+            app.config["UPLOAD_FOLDER"], filename
+        )  # image file in url name
+    else:
+        return jsonify({"error": "Invalid image file"}), 400
+
+    new_pet = Pet(
+        name=name,
+        type=type,
+        breed=breed,
+        age=age,
+        price=price,
+        description=description,
+        imageFilename=image_url,
+    )
+
+    db.session.add(new_pet)
+    db.session.commit()
+    return jsonify({"message": "Pet is added successfully"})
 
 
 @app.route("/pets")
@@ -135,4 +124,7 @@ def list_pets():
 
 
 if __name__ == "__main__":
+    if not os.path.exists(app.config["UPLOAD_FOLDER"]):
+        os.makedirs(app.config["UPLOAD_FOLDER"])
+    db.create_all()
     app.run(debug=True)
