@@ -71,40 +71,59 @@ def home():
 
 @app.route("/add_pet", methods=["POST"])
 def add_pet():
-    name = request.form.get("name")
-    type = request.form.get("type")
-    breed = request.form.get("breed")
-    age = int(request.form.get("age"))
-    price = float(request.form.get("price"))
-    description = request.form.get("description")
-    image = request.files.get("image")
+    try:
+        name = request.form.get("name")
+        type = request.form.get("type")
+        breed = request.form.get("breed")
+        age = int(request.form.get("age"))
+        price = float(request.form.get("price"))
+        description = request.form.get("description")
+        image = request.files.get("image")
 
-    if image and allowed_file(image.filename):
-        filename = secure_filename(image.filename)
-        image.save(
-            os.path.join(app.config["UPLOAD_FOLDER"], filename)
-        )  # image file saving in the backend folder
-        image_url = os.path.join(
-            app.config["UPLOAD_FOLDER"], filename
-        )  # image file in url name
-    else:
-        return jsonify({"error": "Invalid image file"}), 400
+        print(
+            f"name: {name}, type: {type}, breed: {breed}, age: {age}, price: {price}, description: {description}, image: {image}"
+        )
 
-    new_pet = Pet(
-        name=name,
-        type=type,
-        breed=breed,
-        age=age,
-        price=price,
-        description=description,
-        imageFilename=image_url,
-    )
+        # validate all required fields
+        if not all([name, type, breed, age, price, image]):
+            return jsonify({"error": "missing required fields"}), 400
 
-    db.session.add(new_pet)
-    db.session.commit()
-    return jsonify({"message": "Pet is added successfully"})
+        # input field checkpoints
+        try:
+            age = int(age)
+        except ValueError:
+            return jsonify({"error": "Age must be a number "})
+
+        try:
+            price = float(price)
+        except ValueError:
+            return jsonify({"error": "Price must be a number "})
+
+        if image and allowed_file(image.filename):
+            filename = secure_filename(image.filename)
+            image.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+        else:
+            return jsonify({"error": "Invalid image file"}), 400
+
+        new_pet = Pet(
+            name=name,
+            type=type,
+            breed=breed,
+            age=age,
+            price=price,
+            description=description,
+            imageFilename=filename,
+        )
+
+        db.session.add(new_pet)  # add new pet
+        db.session.commit()  # commit the data submission
+        return jsonify({"message": "Pet is added successfully"})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
+# send data from database to the frontend
 @app.route("/pets")
 def list_pets():
     pets = Pet.query.all()
@@ -116,15 +135,86 @@ def list_pets():
             "age": pet.age,
             "price": pet.price,
             "description": pet.description,
-            "imageFilename": pet.imageFilename,
+            "imageURL": request.host_url + "/uploads" + pet.imageFilename,
         }
         for pet in pets
     ]
     return jsonify(pets_list)
 
 
+# populate database
+@app.route("/populate_pets")
+def populate_pets():
+    sample_pets = [
+        {
+            "name": "Buddy",
+            "type": "Dog",
+            "breed": "Golden Retriever",
+            "age": 3,
+            "price": 499.99,
+            "description": "Friendly and energetic",
+            "imageFilename": "buddy.jpg",
+        },
+        {
+            "name": "Beauty",
+            "type": "Cat",
+            "breed": "English Tiger",
+            "age": 2,
+            "price": 499.99,
+            "description": "Friendly and lazy",
+            "imageFilename": "beauty.jpg",
+        },
+        {
+            "name": "Moon",
+            "type": "Cat",
+            "breed": "No Idea",
+            "age": 3,
+            "price": 399.99,
+            "description": "Friendly and lazy",
+            "imageFilename": "moon.jpg",
+        },
+        {
+            "name": "Mochi",
+            "type": "Cat",
+            "breed": "English Black",
+            "age": 3,
+            "price": 599.99,
+            "description": "Angry but beautiful",
+            "imageFilename": "mochi.jpg",
+        },
+    ]
+    for pet_data in sample_pets:
+        new_pet = Pet(
+            name=pet_data["name"],
+            type=pet_data["type"],
+            breed=pet_data["breed"],
+            age=pet_data["age"],
+            price=pet_data["price"],
+            description=pet_data["description"],
+            imageFilename=pet_data["imageFilename"],
+        )
+        db.session.add(new_pet)
+    db.session.commit()
+    return jsonify({"message": "Database populated with sample pets"})
+
+
 if __name__ == "__main__":
     if not os.path.exists(app.config["UPLOAD_FOLDER"]):
         os.makedirs(app.config["UPLOAD_FOLDER"])
-    db.create_all()
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
+
+
+# image file extension
+# if image and allowed_file(image.filename):
+#     filename = secure_filename(image.filename)
+#     image.save(
+#         os.path.join(app.config["UPLOAD_FOLDER"], filename)
+#     )  # image file saving in the backend folder
+#     image_url = os.path.join(
+#         app.config["UPLOAD_FOLDER"], filename
+#     )  # image file in url name
+# else:
+#     return jsonify({"error": "Invalid image file"}), 400
+#

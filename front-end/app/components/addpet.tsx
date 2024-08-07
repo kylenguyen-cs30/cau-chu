@@ -9,7 +9,8 @@ const AddPetModal = () => {
   const [description, setDescription] = useState("");
   const [age, setAge] = useState(0);
   const [price, setPrice] = useState(0);
-  const [imageFilename, setImageFileName] = useState("");
+  // const [imageFilename, setImageFileName] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -25,18 +26,20 @@ const AddPetModal = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     // create a new pet object with the submitted data
-    const petData = {
-      name,
-      type,
-      breed,
-      age,
-      price,
-      description,
-      imageFilename,
-    };
-    // sned the pet data to backend
+
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("type", type);
+    formData.append("price", price.toString());
+    formData.append("age", age.toString());
+    formData.append("description", description);
+    if (imageFile) {
+      formData.append("name", name);
+    }
+
+    // send pet data to backend
     axios
-      .post("http://127.0.0.1:5000/add_pet", petData)
+      .post("http://127.0.0.1:5000/add_pet", formData)
       .then((response) => {
         console.log(response.data);
       })
@@ -45,10 +48,10 @@ const AddPetModal = () => {
       });
   };
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center">
       <button
         onClick={handleOpen}
-        className="rounded mt-4 w-1/4 bg-blue-500 hover:bg-teal-900 text-white font-bold py-2 px-4 "
+        className="rounded   bg-blue-500 hover:bg-teal-900 text-white font-bold py-2 px-4 flex  "
       >
         Add your pet
       </button>
@@ -101,6 +104,10 @@ const AddPetModal = () => {
           />
           <label>Photo</label>
           {/* Upload or add photolink */}
+          <input
+            type="file"
+            onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+          />
 
           <button type="submit">Register</button>
         </form>

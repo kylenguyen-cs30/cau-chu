@@ -30,18 +30,13 @@ export default function Home() {
       .catch((error) => console.error("Error fetching pets:", error));
   }, []);
 
-  // handle submit form
-
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <header className="text-center p-4 pb-60 text-4xl font-bold text-black bg-gray-80">
         Welcome to Cậu Chủ Shop
       </header>
-      {/* <button className="mt-4 w-1/4 bg-blue-500 hover:bg-teal-900 text-white front-bold py-2 px-4 rounded"> */}
-      {/*   Add your pet */}
-      {/* </button> */}
-
-      <div className="btn bg-blue-50 rounded">
+      {/* Add pet button */}
+      <div className="  rounded mt-5 py-2 px-4 flex-col flex justify-center w-full">
         <AddPet></AddPet>
       </div>
       <div className="flex flex-grow grid grid-cols-3 gap-4 p-4">
