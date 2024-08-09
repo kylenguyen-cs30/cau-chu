@@ -9,7 +9,6 @@ const AddPetModal = () => {
   const [description, setDescription] = useState("");
   const [age, setAge] = useState(0);
   const [price, setPrice] = useState(0);
-  // const [imageFilename, setImageFileName] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -23,6 +22,7 @@ const AddPetModal = () => {
     setIsOpen(false);
   };
 
+  // NOTE: handle submission event
   const handleSubmit = (event) => {
     event.preventDefault();
     // create a new pet object with the submitted data
@@ -30,11 +30,13 @@ const AddPetModal = () => {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("type", type);
+    formData.append("breed", breed);
     formData.append("price", price.toString());
     formData.append("age", age.toString());
     formData.append("description", description);
+
     if (imageFile) {
-      formData.append("name", name);
+      formData.append("image", imageFile);
     }
 
     // send pet data to backend

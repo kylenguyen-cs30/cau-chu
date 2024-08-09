@@ -5,6 +5,7 @@ import AddPet from "./components/addpet";
 
 interface Pet {
   imageFilename: string;
+  imageURL: string;
   name: string;
   type: string;
   breed: string;
@@ -43,9 +44,9 @@ export default function Home() {
         {pets.length > 0 &&
           pets.map((pet, index) => (
             <div key={index} className="card bg-white  rounded p-4 text-black">
-              {pet.imageFilename ? (
+              {pet.imageURL ? (
                 <Image
-                  src={`/images/pets/${pet.imageFilename}`}
+                  src={pet.imageURL}
                   alt={pet.name}
                   width={300}
                   height={300}
