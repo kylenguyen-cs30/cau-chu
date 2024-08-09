@@ -66,6 +66,7 @@ const AddPetModal = () => {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            className="border-2 border-black-100"
           />
 
           <label>Type:</label>
@@ -74,6 +75,7 @@ const AddPetModal = () => {
             type="text"
             value={type}
             onChange={(e) => setType(e.target.value)}
+            className="border-2 border-black-100"
           />
 
           <label>Price:</label>
@@ -81,7 +83,8 @@ const AddPetModal = () => {
           <input
             type="number"
             value={price}
-            onChange={(e) => setPrice(parseInt(e.target.value))}
+            onChange={(e) => setPrice(parseFloat(e.target.value))}
+            className="border-2 border-black-100"
           />
           <label>Breed:</label>
 
@@ -89,6 +92,7 @@ const AddPetModal = () => {
             type="text"
             value={breed}
             onChange={(e) => setBreed(e.target.value)}
+            className="border-2 border-black-100"
           />
           <label>Age(months): </label>
 
@@ -96,6 +100,7 @@ const AddPetModal = () => {
             type="number"
             value={age}
             onChange={(e) => setAge(parseInt(e.target.value))}
+            className="border-2 border-black-100"
           />
           <label>Description: </label>
 
@@ -103,6 +108,7 @@ const AddPetModal = () => {
             type="text"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            className="border-2 border-black-100"
           />
           <label>Photo</label>
           {/* Upload or add photolink */}
@@ -111,7 +117,12 @@ const AddPetModal = () => {
             onChange={(e) => setImageFile(e.target.files?.[0] || null)}
           />
 
-          <button type="submit">Register</button>
+          <button
+            type="submit"
+            className="bg-blue-700 border-4 py-2 px-4 text-white"
+          >
+            Register
+          </button>
         </form>
       </PortalModal>
     </div>
