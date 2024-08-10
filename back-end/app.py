@@ -142,6 +142,7 @@ def list_pets():
     return jsonify(pets_list)
 
 
+# NOTE: this route for sending  pictures from backend to frontend
 @app.route("/uploads/<filename>")
 def get_image(filename):
     return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
