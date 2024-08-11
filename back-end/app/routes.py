@@ -74,6 +74,7 @@ def list_pets():
             "type": pet.type,
             "age": pet.age,
             "price": pet.price,
+            "breed": pet.breed,
             "description": pet.description,
             "imageURL": request.host_url + "uploads/" + pet.imageFilename,
         }

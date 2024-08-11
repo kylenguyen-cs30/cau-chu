@@ -15,6 +15,10 @@ interface Pet {
 
 export default function Home() {
   const [pets, setPets] = useState<Pet[]>([]);
+
+  // Text
+  const text = "Welcome to Cậu Chủ Shop";
+
   // fetch pets from back end
   useEffect(() => {
     fetch("http://127.0.0.1:5000/pets")
@@ -33,8 +37,17 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <header className="text-center p-4 pb-60 text-4xl font-bold text-black bg-gray-80">
-        Welcome to Cậu Chủ Shop
+      {/* Header Title */}
+      <header className="text-center p-4 pb-60 text-5xl font-bold text-black bg-gray-80">
+        {text.split("").map((char, index) => (
+          <span
+            key={index}
+            className="slide-in-effect"
+            style={{ animationDelay: `${index * 0.1}s` }}
+          >
+            {char === " " ? "\u00A0" : char}
+          </span>
+        ))}
       </header>
       {/* Add pet button */}
       <div className="  rounded mt-5 py-2 px-4 flex-col flex justify-center w-full">
