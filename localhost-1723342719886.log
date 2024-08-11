@@ -1,0 +1,53 @@
+page.tsx:28 Fetched data (4) [{…}, {…}, {…}, {…}]
+page.tsx:28 Fetched data (4) [{…}, {…}, {…}, {…}]
+addpet.tsx:44 
+        
+        
+       POST http://127.0.0.1:5000/add_pet 500 (INTERNAL SERVER ERROR)
+dispatchXhrRequest @ xhr.js:206
+xhr @ xhr.js:26
+dispatchRequest @ dispatchRequest.js:61
+_request @ Axios.js:182
+request @ Axios.js:49
+httpMethod @ Axios.js:221
+wrap @ bind.js:9
+handleSubmit @ addpet.tsx:44
+callCallback @ react-dom.development.js:20565
+invokeGuardedCallbackImpl @ react-dom.development.js:20614
+invokeGuardedCallback @ react-dom.development.js:20689
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:20703
+executeDispatch @ react-dom.development.js:32128
+processDispatchQueueItemsInOrder @ react-dom.development.js:32160
+processDispatchQueue @ react-dom.development.js:32173
+dispatchEventsForPlugins @ react-dom.development.js:32184
+eval @ react-dom.development.js:32374
+batchedUpdates$1 @ react-dom.development.js:24953
+batchedUpdates @ react-dom.development.js:28844
+dispatchEventForPluginEventSystem @ react-dom.development.js:32373
+dispatchEvent @ react-dom.development.js:30141
+dispatchDiscreteEvent @ react-dom.development.js:30112
+Show 21 more frames
+Show less
+addpet.tsx:50 AxiosError {message: 'Request failed with status code 500', name: 'AxiosError', code: 'ERR_BAD_RESPONSE', config: {…}, request: XMLHttpRequest, …}code: "ERR_BAD_RESPONSE"config: {transitional: {…}, adapter: Array(3), transformRequest: Array(1), transformResponse: Array(1), timeout: 0, …}message: "Request failed with status code 500"name: "AxiosError"request: XMLHttpRequest {onreadystatechange: null, readyState: 4, timeout: 0, withCredentials: false, upload: XMLHttpRequestUpload, …}response: {data: {…}, status: 500, statusText: 'INTERNAL SERVER ERROR', headers: AxiosHeaders, config: {…}, …}stack: "AxiosError: Request failed with status code 500\n    at settle (webpack-internal:///(app-pages-browser)/./node_modules/axios/lib/core/settle.js:24:12)\n    at XMLHttpRequest.onloadend (webpack-internal:///(app-pages-browser)/./node_modules/axios/lib/adapters/xhr.js:70:66)\n    at Axios.request (webpack-internal:///(app-pages-browser)/./node_modules/axios/lib/core/Axios.js:54:41)"[[Prototype]]: Error
+window.console.error @ app-index.js:33
+console.error @ hydration-error-info.js:63
+overrideMethod @ console.js:288
+eval @ addpet.tsx:50
+Promise.catch
+handleSubmit @ addpet.tsx:49
+callCallback @ react-dom.development.js:20565
+invokeGuardedCallbackImpl @ react-dom.development.js:20614
+invokeGuardedCallback @ react-dom.development.js:20689
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:20703
+executeDispatch @ react-dom.development.js:32128
+processDispatchQueueItemsInOrder @ react-dom.development.js:32160
+processDispatchQueue @ react-dom.development.js:32173
+dispatchEventsForPlugins @ react-dom.development.js:32184
+eval @ react-dom.development.js:32374
+batchedUpdates$1 @ react-dom.development.js:24953
+batchedUpdates @ react-dom.development.js:28844
+dispatchEventForPluginEventSystem @ react-dom.development.js:32373
+dispatchEvent @ react-dom.development.js:30141
+dispatchDiscreteEvent @ react-dom.development.js:30112
+Show 17 more frames
+Show less

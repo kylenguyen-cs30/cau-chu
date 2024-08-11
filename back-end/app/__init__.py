@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from sqlalchemy import inspect
+
 
 db = SQLAlchemy()
 
@@ -17,8 +19,10 @@ def create_app():
     db.init_app(app)
 
     with app.app_context():
-        db.create_all()
+        # Import Models to ensure they are registered
+        from .models import Pet, User
 
+        db.create_all()  # This line ensures that all tables are created
         # Import and register blueprints
         from .routes import main
         from .auth_routes import auth  # Placeholder for future auth routes

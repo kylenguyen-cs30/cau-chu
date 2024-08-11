@@ -8,7 +8,7 @@ main = Blueprint("main", __name__)
 
 
 def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1).lower() in {
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in {
         "png",
         "jpg",
         "jpeg",
@@ -21,6 +21,7 @@ def home():
     return jsonify("Welcome to Cau Chu shop Server Side")
 
 
+# NOTE : adding pet
 @main.route("/add_pet", methods=["POST"])
 def add_pet():
     try:
@@ -59,6 +60,7 @@ def add_pet():
         return jsonify({"message": "Pet is added successfully"})
 
     except Exception as e:
+        print(f"Error adding pet: {e}")
         return jsonify({"error": str(e)}), 500
 
 

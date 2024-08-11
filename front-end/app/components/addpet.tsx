@@ -84,7 +84,10 @@ const AddPetModal = () => {
           <input
             type="number"
             value={price}
-            onChange={(e) => setPrice(parseFloat(e.target.value))}
+            onChange={(e) => {
+              const value = e.target.value;
+              setPrice(value === "" ? 0 : parseFloat(value));
+            }}
             className="border-2 border-black-100"
           />
           <label>Breed:</label>
@@ -100,7 +103,10 @@ const AddPetModal = () => {
           <input
             type="number"
             value={age}
-            onChange={(e) => setAge(parseInt(e.target.value))}
+            onChange={(e) => {
+              const value = e.target.value;
+              setAge(value === "" ? 0 : parseInt(value));
+            }}
             className="border-2 border-black-100"
           />
           <label>Description: </label>
