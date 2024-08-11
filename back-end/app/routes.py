@@ -1,3 +1,4 @@
+import logging
 from flask import Blueprint, jsonify, request, send_from_directory
 from werkzeug.utils import secure_filename
 import os
@@ -83,7 +84,13 @@ def list_pets():
 
 @main.route("/uploads/<filename>")
 def get_image(filename):
-    return send_from_directory("uploads", filename)
+    try:
+        full_path = os.path.join("uploads", filename)
+        logging.debug(f"Attempting to serve file: {full_path}")
+        return send_from_directory("uploads", filename)
+    except Exception as e:
+        logging.error(f"Error serving file {filename} : {e}")
+        return jsonify({"error": "File not found"}), 404
 
 
 @main.route("/populate_pets")

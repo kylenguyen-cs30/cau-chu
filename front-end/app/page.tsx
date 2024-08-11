@@ -44,10 +44,10 @@ export default function Home() {
         {pets.length > 0 &&
           pets.map((pet, index) => (
             <div key={index} className="card bg-white  rounded p-4 text-black">
+              {/* priorty attribute is not included */}
               {pet.imageURL ? (
                 <Image
                   src={pet.imageURL}
-                  priority={true}
                   alt={pet.name}
                   width={300}
                   height={300}
