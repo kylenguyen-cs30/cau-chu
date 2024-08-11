@@ -86,9 +86,11 @@ def list_pets():
 @main.route("/uploads/<filename>")
 def get_image(filename):
     try:
-        full_path = os.path.join("uploads", filename)
+        upload_folder = os.path.join(os.getcwd(), "uploads")
+        full_path = os.path.join(upload_folder, filename)
         logging.debug(f"Attempting to serve file: {full_path}")
-        return send_from_directory("uploads", filename)
+        # return send_from_directory("uploads", filename)
+        return send_from_directory(upload_folder, filename)
     except Exception as e:
         logging.error(f"Error serving file {filename} : {e}")
         return jsonify({"error": "File not found"}), 404
