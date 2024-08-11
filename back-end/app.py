@@ -79,6 +79,7 @@ def add_pet():
         price = float(request.form.get("price"))
         description = request.form.get("description")
         image = request.files.get("image")
+        gender = request.form.get("gender")
 
         print(
             f"name: {name}, type: {type}, breed: {breed}, age: {age}, price: {price}, description: {description}, image: {image}"
@@ -113,6 +114,7 @@ def add_pet():
             price=price,
             description=description,
             imageFilename=filename,
+            gender=gender,
         )
 
         db.session.add(new_pet)  # add new pet

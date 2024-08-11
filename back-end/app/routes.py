@@ -33,6 +33,7 @@ def add_pet():
         age = int(request.form.get("age"))
         description = request.form.get("description")
         image = request.files.get("image")
+        gender = request.form.get("gender")
 
         # NOTE : input checkpoints
         if not all([name, type, breed, age, price, image]):
@@ -53,6 +54,7 @@ def add_pet():
             price=price,
             description=description,
             imageFilename=filename,
+            gender=gender,
         )
 
         db.session.add(new_pet)
@@ -89,7 +91,6 @@ def get_image(filename):
         upload_folder = os.path.join(os.getcwd(), "uploads")
         full_path = os.path.join(upload_folder, filename)
         logging.debug(f"Attempting to serve file: {full_path}")
-        # return send_from_directory("uploads", filename)
         return send_from_directory(upload_folder, filename)
     except Exception as e:
         logging.error(f"Error serving file {filename} : {e}")
@@ -107,6 +108,7 @@ def populate_pets():
             "price": 499.99,
             "description": "Friendly and energetic",
             "imageFilename": "buddy.jpg",
+            "gender": "Male",
         },
         {
             "name": "Beauty",
@@ -116,6 +118,7 @@ def populate_pets():
             "price": 499.99,
             "description": "Friendly and lazy",
             "imageFilename": "beauty.jpg",
+            "gender": "Female",
         },
         {
             "name": "Moon",
@@ -125,6 +128,7 @@ def populate_pets():
             "price": 399.99,
             "description": "Friendly and lazy",
             "imageFilename": "moon.jpg",
+            "gender": "Female",
         },
         {
             "name": "Mochi",
@@ -134,6 +138,7 @@ def populate_pets():
             "price": 599.99,
             "description": "Angry but beautiful",
             "imageFilename": "mochi.jpg",
+            "gender": "Male",
         },
     ]
     for pet_data in sample_pets:
@@ -145,6 +150,7 @@ def populate_pets():
             price=pet_data["price"],
             description=pet_data["description"],
             imageFilename=pet_data["imageFilename"],
+            gender=pet_data["gender"],
         )
         db.session.add(new_pet)
     db.session.commit()

@@ -12,8 +12,11 @@ class Pet(db.Model):
     price = db.Column(db.Float, nullable=False)
     description = db.Column(db.Text, nullable=True)
     imageFilename = db.Column(db.Text, nullable=False)
+    gender = db.Column(db.String(10), nullable=False)
 
-    def __init__(self, name, type, breed, age, price, description, imageFilename):
+    def __init__(
+        self, name, type, breed, age, price, description, imageFilename, gender
+    ):
         self.name = name
         self.type = type
         self.breed = breed
@@ -21,6 +24,7 @@ class Pet(db.Model):
         self.price = price
         self.description = description
         self.imageFilename = imageFilename
+        self.gender = gender
 
     def __repr__(self) -> str:
         return f"<Pet{self.name}>"
