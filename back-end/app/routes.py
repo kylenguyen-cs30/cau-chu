@@ -75,6 +75,7 @@ def list_pets():
             "name": pet.name,
             "type": pet.type,
             "age": pet.age,
+            "gender": pet.gender,
             "price": pet.price,
             "breed": pet.breed,
             "description": pet.description,
