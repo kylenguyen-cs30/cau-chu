@@ -11,6 +11,7 @@ interface Pet {
   breed: string;
   age: number;
   price: number;
+  gender: string;
 }
 
 export default function Home() {
@@ -73,6 +74,7 @@ export default function Home() {
               <p>Type: {pet.type}</p>
               <p>Breed: {pet.breed}</p>
               <p>Age: {pet.age} years</p>
+              <p>Gender: {pet.gender} </p>
               <p className="font-bold">Price: ${pet.price}</p>
               <button
                 className="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"

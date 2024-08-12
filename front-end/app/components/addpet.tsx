@@ -10,6 +10,7 @@ const AddPetModal = () => {
   const [age, setAge] = useState(0);
   const [price, setPrice] = useState(0);
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [gender, setGender] = useState("");
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -34,6 +35,7 @@ const AddPetModal = () => {
     formData.append("price", price.toString());
     formData.append("age", age.toString());
     formData.append("description", description);
+    formData.append("gender", gender);
 
     if (imageFile) {
       formData.append("image", imageFile);
@@ -98,6 +100,20 @@ const AddPetModal = () => {
             onChange={(e) => setBreed(e.target.value)}
             className="border-2 border-black-100"
           />
+
+          <label>Gender:</label>
+          <select
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+            className="border-2 border-black-100"
+          >
+            <option value="" disabled>
+              Select Gender
+            </option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+
           <label>Age(months): </label>
 
           <input
