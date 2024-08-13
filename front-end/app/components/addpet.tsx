@@ -28,6 +28,7 @@ const AddPetModal = () => {
     event.preventDefault();
     // create a new pet object with the submitted data
 
+    // add information into formdata
     const formData = new FormData();
     formData.append("name", name);
     formData.append("type", type);
