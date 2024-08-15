@@ -54,10 +54,14 @@ export default function Home() {
       <div className="  rounded mt-5 py-2 px-4 flex-col flex justify-center w-full">
         <AddPet></AddPet>
       </div>
-      <div className="flex flex-grow grid grid-cols-3 gap-4 p-4">
+      <div className=" flex-grow grid sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
         {pets.length > 0 &&
           pets.map((pet, index) => (
-            <div key={index} className="card bg-white  rounded p-4 text-black">
+            <div
+              key={index}
+              className="card  rounded-sm p-4 text-black"
+              style={{ backgroundColor: "rgb(245, 237, 237)" }}
+            >
               {/* priorty attribute is not included */}
               {pet.imageURL ? (
                 <Image
@@ -85,7 +89,7 @@ export default function Home() {
             </div>
           ))}
       </div>
-      <footer className="text-center p-4 text-black bg-white py-50 w-full">
+      <footer className="text-center p-4 text-black  py-50 w-full mt-28">
         {" "}
         Copyright © 2024 Cậu Chủ Shop
       </footer>
