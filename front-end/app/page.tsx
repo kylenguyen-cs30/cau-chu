@@ -2,6 +2,7 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import AddPet from "./components/addpet";
+import Button from "./components/ui/button/page";
 
 interface Pet {
   imageFilename: string;
@@ -51,6 +52,7 @@ export default function Home() {
         ))}
       </header>
       {/* Add pet button */}
+      <Button>Test</Button>
       <div className="  rounded mt-5 py-2 px-4 flex-col flex justify-center w-full">
         <AddPet></AddPet>
       </div>
