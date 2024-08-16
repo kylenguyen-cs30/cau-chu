@@ -52,7 +52,6 @@ export default function Home() {
         ))}
       </header>
       {/* Add pet button */}
-      <Button>Test</Button>
       <div className="  rounded mt-5 py-2 px-4 flex-col flex justify-center w-full">
         <AddPet></AddPet>
       </div>
@@ -82,12 +81,12 @@ export default function Home() {
               <p>Age: {pet.age} years</p>
               <p>Gender: {pet.gender} </p>
               <p className="font-bold">Price: ${pet.price}</p>
-              <button
-                className="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              <Button
+                // className="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 onClick={() => alert("Added to cart!")}
               >
                 Add to Cart
-              </button>
+              </Button>
             </div>
           ))}
       </div>

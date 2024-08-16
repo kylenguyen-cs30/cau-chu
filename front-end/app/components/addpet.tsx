@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import PortalModal from "./portalModal";
+import Button from "./ui/button/page";
 
 const AddPetModal = () => {
   const [name, setName] = useState("");
@@ -55,12 +56,7 @@ const AddPetModal = () => {
   };
   return (
     <div className="flex flex-col justify-center items-center">
-      <button
-        onClick={handleOpen}
-        className="rounded   bg-blue-500 hover:bg-teal-900 text-white font-bold py-2 px-4 flex  "
-      >
-        Add your pet
-      </button>
+      <Button onClick={handleOpen}>Add your pet</Button>
       <PortalModal isOpen={isOpen} onClose={handleClose}>
         {/* input field  */}
         <form onSubmit={handleSubmit}>
@@ -141,12 +137,13 @@ const AddPetModal = () => {
             onChange={(e) => setImageFile(e.target.files?.[0] || null)}
           />
 
-          <button
+          <Button
             type="submit"
-            className="bg-blue-700 border-4 py-2 px-4 text-white"
+            // type="button"
+            // className="bg-blue-700 border-4 py-2 px-4 text-white"
           >
             Register
-          </button>
+          </Button>
         </form>
       </PortalModal>
     </div>

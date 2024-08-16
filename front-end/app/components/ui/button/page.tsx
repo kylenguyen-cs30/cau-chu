@@ -3,12 +3,13 @@ import styles from "./page.module.css";
 
 interface Props {
   children?: React.ReactNode;
-  onClick: React.ReactEventHandler;
+  onClick?: React.ReactEventHandler;
+  type?: any;
 }
 
-const Button = ({ onClick, children }: Props) => {
+const Button = ({ onClick, children, type }: Props) => {
   return (
-    <button onClick={onClick} className={styles.button}>
+    <button onClick={onClick} className={styles.button} type={type}>
       {children}
     </button>
   );
