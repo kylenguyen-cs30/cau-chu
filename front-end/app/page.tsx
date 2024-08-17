@@ -50,11 +50,15 @@ export default function Home() {
             {char === " " ? "\u00A0" : char}
           </span>
         ))}
+
+        <Image> </Image>
       </header>
       {/* Add pet button */}
       <div className="  rounded mt-5 py-2 px-4 flex-col flex justify-center w-full">
-        <AddPet></AddPet>
+        <AddPet src="/image/pets.jpg"></AddPet>
       </div>
+
+      {/* Post Grid  */}
       <div className=" flex-grow grid sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
         {pets.length > 0 &&
           pets.map((pet, index) => (
@@ -70,7 +74,7 @@ export default function Home() {
                   alt={pet.name}
                   width={300}
                   height={300}
-                  className="object-cover  rounded"
+                  className="pet-image object-cover  rounded"
                 />
               ) : (
                 <div>No Image Available</div> // Placeholder in case of no image

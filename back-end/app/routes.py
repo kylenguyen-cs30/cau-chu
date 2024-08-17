@@ -156,3 +156,19 @@ def populate_pets():
         db.session.add(new_pet)
     db.session.commit()
     return jsonify({"message": "Database populated with sample pets"})
+
+
+@main.route("/delete_pet/<int:pet_id>", methods=["DELETE"])
+def delete_pet(pet_id):
+    try:
+        pet = Pet.filter_by(id).first()
+        # that pet exist
+        if pet:
+            db.session.delete(pet)
+            db.session.commit()
+            return jsonify({"message": f"Pet with ID {pet_id} deleted successfully"})
+        else:
+            return jsonify({"error": f"Pet with ID {pet_id} not found"}), 404
+    except Exception as e:
+        logging.error(f"Error deleting with ID {pet_id} : {e}")
+        return jsonify({"error": str(e)}), 500
