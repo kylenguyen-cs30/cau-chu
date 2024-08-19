@@ -19,7 +19,7 @@ export default function Home() {
   const [pets, setPets] = useState<Pet[]>([]);
 
   // Text
-  const text = "Welcome to Cậu Chủ Shop";
+  const text = "Cậu Chủ Shop";
 
   // fetch pets from back end
   useEffect(() => {
@@ -40,22 +40,64 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       {/* Header Title */}
-      <header className="text-center p-4 pb-60 text-5xl font-bold text-black bg-gray-80">
-        {text.split("").map((char, index) => (
-          <span
-            key={index}
-            className="slide-in-effect"
-            style={{ animationDelay: `${index * 0.1}s` }}
-          >
-            {char === " " ? "\u00A0" : char}
-          </span>
-        ))}
 
-        <Image> </Image>
+      <nav className="">
+        <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+          <a className="flex items-center  space-x-3">
+            <Image
+              src="/image/logo.png"
+              alt="logo"
+              width={60}
+              height={60}
+              className="object-cover rounded "
+            />
+            <div className="p-4 text-2xl text-black">
+              {text.split("").map((char, index) => (
+                <span
+                  key={index}
+                  className="slide-in-effect"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </span>
+              ))}
+            </div>
+          </a>
+
+          <div className="hidden w-full md:block md:w-auto">
+            <ul className="font-medium flex  p-4 md:p-0 mt-4 border rounded-lg md:space-x-8 md:mt-0">
+              <li>
+                <a className="block py-2 px-3 rounded">Home</a>
+              </li>
+              <li>
+                <a className="block py-2 px-3 rounded">About</a>
+              </li>
+              <li>
+                <a className="block py-2 px-3 rounded">Pricing</a>
+              </li>
+              <li>
+                <a className="block py-2 px-3 rounded">Login</a>
+              </li>
+              <li>
+                <a className="block py-2 px-3 rounded">Sign up</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <header className=" flex ">
+        <Image
+          src="/image/pets.jpg"
+          alt="Pets"
+          width={2000}
+          height={300}
+          className="object-cover rounded mt-4"
+        />
       </header>
       {/* Add pet button */}
       <div className="  rounded mt-5 py-2 px-4 flex-col flex justify-center w-full">
-        <AddPet src="/image/pets.jpg"></AddPet>
+        <AddPet></AddPet>
       </div>
 
       {/* Post Grid  */}
