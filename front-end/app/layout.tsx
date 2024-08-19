@@ -8,6 +8,24 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Cậu Chủ",
   description: "A Place where Pet found Happiness",
+  icons: {
+    icon: "/favicon.ico",
+  },
+  // links: [
+  //   {
+  //     rel: "preconnect",
+  //     href: "https://fonts.googleapis.com",
+  //   },
+  //   {
+  //     rel: "preconnect",
+  //     href: "https://fonts.gstatic.com",
+  //     crossOrigin: "true",
+  //   },
+  //   {
+  //     rel: "stylesheet",
+  //     href: "https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap",
+  //   },
+  // ],
 };
 
 export default function RootLayout({
@@ -29,6 +47,7 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap"
           rel="stylesheet"
         />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <body className={inter.className}>{children}</body>
     </html>
