@@ -93,6 +93,7 @@ export default function Home() {
       <Image
         src="/image/pets.jpg"
         alt="Pets"
+        priority={true}
         width={1000}
         height={300}
         className="object-cover rounded mt-4 w-full"
