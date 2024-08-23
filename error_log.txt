@@ -1,0 +1,508 @@
+Hi chatgpt, after migrating from next/head to metadata, i am encountering a big bugs. here my project structure 
+
+.
+├── README.md
+├── app
+│   ├── _document.tsx
+│   ├── about
+│   │   └── page.tsx
+│   ├── components
+│   │   ├── Filterpets.tsx
+│   │   ├── addpet.tsx
+│   │   ├── portalModal.tsx
+│   │   └── ui
+│   │       └── button
+│   │           ├── page.module.css
+│   │           └── page.tsx
+│   ├── globals.css
+│   ├── layout.tsx
+│   ├── login
+│   │   └── page.tsx
+│   └── page.tsx
+├── next-env.d.ts
+├── next.config.mjs
+├── package-lock.json
+├── package.json
+├── postcss.config.mjs
+├── public
+│   ├── favicon.ico
+│   ├── image
+│   │   ├── logo.png
+│   │   ├── logo2.webp
+│   │   ├── logo3 copy.webp
+│   │   ├── logo3-cropped.png
+│   │   ├── logo3.webp
+│   │   ├── logo4.webp
+│   │   └── pets.jpg
+│   ├── next.svg
+│   └── vercel.svg
+├── tailwind.config.ts
+├── tsconfig.json
+└── yarn.lock
+
+9 directories, 30 files
+
+
+
+and here are my backend structure : 
+
+.
+├── __pycache__
+│   └── app.cpython-312.pyc
+├── api_tests
+│   └── pets.http
+├── app
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── auth_routes.cpython-312.pyc
+│   │   ├── models.cpython-312.pyc
+│   │   └── routes.cpython-312.pyc
+│   ├── auth_routes.py
+│   ├── models.py
+│   └── routes.py
+├── app.py
+├── database_population.py
+├── instance
+│   └── site.db
+├── migrations
+│   ├── __pycache__
+│   │   └── env.cpython-312.pyc
+│   └── versions
+│       └── __pycache__
+│           └── 0868ec72fd48_added_imagefilename_column.cpython-312.pyc
+├── requirements.txt
+├── run.py
+└── uploads
+    ├── Pasted_image.png
+    ├── beauty.jpg
+    ├── buddy.jpg
+    ├── cutie.jpg
+    ├── king.png
+    ├── mochi.jpg
+    └── moon.jpg
+
+11 directories, 24 files
+
+
+
+and here are the code in routes.py : 
+
+import logging
+from flask import Blueprint, jsonify, request, send_from_directory
+from werkzeug.utils import secure_filename
+import os
+from .models import Pet
+from . import db
+
+main = Blueprint("main", __name__)
+
+
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in {
+        "png",
+        "jpg",
+        "jpeg",
+        "gif",
+    }
+
+
+@main.route("/")
+def home():
+    return jsonify("Welcome to Cau Chu shop Server Side")
+
+
+# NOTE : adding pet
+@main.route("/add_pet", methods=["POST"])
+def add_pet():
+    try:
+        name = request.form.get("name")
+        type = request.form.get("type")
+        breed = request.form.get("breed")
+        price = float(request.form.get("price"))
+        age = int(request.form.get("age"))
+        description = request.form.get("description")
+        image = request.files.get("image")
+        gender = request.form.get("gender")
+
+        # NOTE : input checkpoints
+        if not all([name, type, breed, age, price, image]):
+            return jsonify({"error": "missing required fields"}), 400
+
+        if image and allowed_file(image.filename):
+            filename = secure_filename(image.filename)
+            image.save(os.path.join("uploads", filename))
+        else:
+            return jsonify({"error": "Invalid image file"}), 400
+
+        # create object Pet
+        new_pet = Pet(
+            name=name,
+            type=type,
+            breed=breed,
+            age=age,
+            price=price,
+            description=description,
+            imageFilename=filename,
+            gender=gender,
+        )
+
+        db.session.add(new_pet)
+        db.session.commit()
+
+        return jsonify({"message": "Pet is added successfully"})
+
+    except Exception as e:
+        print(f"Error adding pet: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@main.route("/pets")
+def list_pets():
+    pets = Pet.query.all()
+    pets_list = [
+        {
+            "name": pet.name,
+            "type": pet.type,
+            "age": pet.age,
+            "gender": pet.gender,
+            "price": pet.price,
+            "breed": pet.breed,
+            "description": pet.description,
+            "imageURL": request.host_url + "uploads/" + pet.imageFilename,
+        }
+        for pet in pets
+    ]
+    return jsonify(pets_list)
+
+
+@main.route("/uploads/<filename>")
+def get_image(filename):
+    try:
+        upload_folder = os.path.join(os.getcwd(), "uploads")
+        full_path = os.path.join(upload_folder, filename)
+        logging.debug(f"Attempting to serve file: {full_path}")
+        return send_from_directory(upload_folder, filename)
+    except Exception as e:
+        logging.error(f"Error serving file {filename} : {e}")
+        return jsonify({"error": "File not found"}), 404
+
+
+@main.route("/populate_pets")
+def populate_pets():
+    sample_pets = [
+        {
+            "name": "Buddy",
+            "type": "Dog",
+            "breed": "Golden Retriever",
+            "age": 3,
+            "price": 499.99,
+            "description": "Friendly and energetic",
+            "imageFilename": "buddy.jpg",
+            "gender": "Male",
+        },
+        {
+            "name": "Beauty",
+            "type": "Cat",
+            "breed": "English Tiger",
+            "age": 2,
+            "price": 499.99,
+            "description": "Friendly and lazy",
+            "imageFilename": "beauty.jpg",
+            "gender": "Female",
+        },
+        {
+            "name": "Moon",
+            "type": "Cat",
+            "breed": "No Idea",
+            "age": 3,
+            "price": 399.99,
+            "description": "Friendly and lazy",
+            "imageFilename": "moon.jpg",
+            "gender": "Female",
+        },
+        {
+            "name": "Mochi",
+            "type": "Cat",
+            "breed": "English Black",
+            "age": 3,
+            "price": 599.99,
+            "description": "Angry but beautiful",
+            "imageFilename": "mochi.jpg",
+            "gender": "Male",
+        },
+    ]
+    for pet_data in sample_pets:
+        new_pet = Pet(
+            name=pet_data["name"],
+            type=pet_data["type"],
+            breed=pet_data["breed"],
+            age=pet_data["age"],
+            price=pet_data["price"],
+            description=pet_data["description"],
+            imageFilename=pet_data["imageFilename"],
+            gender=pet_data["gender"],
+        )
+        db.session.add(new_pet)
+    db.session.commit()
+    return jsonify({"message": "Database populated with sample pets"})
+
+
+@main.route("/delete_pet/<int:pet_id>", methods=["DELETE"])
+def delete_pet(pet_id):
+    try:
+        pet = Pet.filter_by(id).first()
+        # that pet exist
+        if pet:
+            db.session.delete(pet)
+            db.session.commit()
+            return jsonify({"message": f"Pet with ID {pet_id} deleted successfully"})
+        else:
+            return jsonify({"error": f"Pet with ID {pet_id} not found"}), 404
+    except Exception as e:
+        logging.error(f"Error deleting with ID {pet_id} : {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+
+and here are my codes in app/page.tsx from frontend : 
+
+"use client";
+import Image from "next/image";
+import React, { useEffect, useState } from "react";
+import AddPet from "./components/addpet";
+import Button from "./components/ui/button/page";
+
+interface Pet {
+  imageFilename: string;
+  imageURL: string;
+  name: string;
+  type: string;
+  breed: string;
+  age: number;
+  price: number;
+  gender: string;
+}
+
+export default function Home() {
+  const [pets, setPets] = useState<Pet[]>([]);
+
+  // Text
+  const text = "Cậu Chủ Shop";
+
+  // fetch pets from back end
+  useEffect(() => {
+    fetch("http://127.0.0.1:5000/pets")
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Network response was not okay");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("Fetched data", data);
+        setPets(data);
+      })
+      .catch((error) => console.error("Error fetching pets:", error));
+  }, []);
+
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      {/* Header Title */}
+
+      <nav>
+        <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-3">
+          <a className="flex items-center  space-x-6">
+            <Image
+              src="/image/logo3-cropped.png"
+              alt="logo"
+              width={80}
+              height={80}
+              className="object-cover rounded "
+            />
+            <div className="p-4 text-2xl text-black">
+              {text.split("").map((char, index) => (
+                <span
+                  key={index}
+                  className="slide-in-effect"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </span>
+              ))}
+            </div>
+          </a>
+
+          <div className="hidden w-full md:block md:w-auto ml-8">
+            <ul className="font-medium flex  p-4 md:p-0 mt-4 border rounded-lg md:space-x-8 md:mt-0">
+              <li>
+                <a className="block py-2 px-3 rounded">Home</a>
+              </li>
+              <li>
+                <a href="/about" className="block py-2 px-3 rounded">
+                  About
+                </a>
+              </li>
+              <li>
+                <a className="block py-2 px-3 rounded">Pricing</a>
+              </li>
+              <li>
+                <a className="block py-2 px-3 rounded">Login</a>
+              </li>
+              <li>
+                <a href="" className="block py-2 px-3 rounded">
+                  Sign up
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <Image
+        src="/image/pets.jpg"
+        alt="Pets"
+        priority={true}
+        width={1000}
+        height={300}
+        className="object-cover rounded mt-4 w-full"
+      />
+
+      {/* Add pet button */}
+      <div className="  rounded mt-5 py-2 px-4 flex-col flex justify-center w-full">
+        <AddPet></AddPet>
+      </div>
+
+      {/* Post Grid  */}
+      <div className=" flex-grow grid sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+        {pets.length > 0 &&
+          pets.map((pet, index) => (
+            <div
+              key={index}
+              className="card  rounded-sm p-4 text-black"
+              style={{ backgroundColor: "rgb(245, 237, 237)" }}
+            >
+              {/* priorty attribute is not included */}
+              {pet.imageURL ? (
+                <Image
+                  src={pet.imageURL}
+                  alt={pet.name}
+                  width={300}
+                  height={300}
+                  className="pet-image object-cover  rounded"
+                />
+              ) : (
+                <div>No Image Available</div> // Placeholder in case of no image
+              )}
+              <p>Name : {pet.name}</p>
+              <p>Type: {pet.type}</p>
+              <p>Breed: {pet.breed}</p>
+              <p>Age: {pet.age} years</p>
+              <p>Gender: {pet.gender} </p>
+              <p className="font-bold">Price: ${pet.price}</p>
+              <Button
+                // className="mt-4 w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => alert("Added to cart!")}
+              >
+                Add to Cart
+              </Button>
+            </div>
+          ))}
+      </div>
+      <footer className="text-center p-4 text-black  py-50 w-full mt-28">
+        {" "}
+        Copyright © 2024 Cậu Chủ Shop
+      </footer>
+    </main>
+  );
+}
+
+
+and here are the error that i got from client-side console : 
+
+
+localhost/:1 Access to fetch at 'http://127.0.0.1:5000/pets' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
+127.0.0.1:5000/pets:1 
+        
+        
+       Failed to load resource: net::ERR_FAILED
+app-index.js:33 Error fetching pets: TypeError: Failed to fetch
+    at eval (page.tsx:26:5)
+    at commitHookEffectListMount (react-dom.development.js:21102:23)
+    at commitHookPassiveMountEffects (react-dom.development.js:23154:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23259:11)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23256:9)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23370:9)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23370:9)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23256:9)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23370:9)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23256:9)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23370:9)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23256:9)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23256:9)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23256:9)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23370:9)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23256:9)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23256:9)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23370:9)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23370:9)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23256:9)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23370:9)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23370:9)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23370:9)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23370:9)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23256:9)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23370:9)
+    at recursivelyTraversePassiveMountEffects (react-dom.development.js:23237:7)
+    at commitPassiveMountOnFiber (react-dom.development.js:23370:9)
+window.console.error @ app-index.js:33
+Show 1 more frame
+Show less
+localhost/:1 Access to fetch at 'http://127.0.0.1:5000/pets' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
+127.0.0.1:5000/pets:1 
+        
+        
+       Failed to load resource: net::ERR_FAILED
+app-index.js:33 Error fetching pets: TypeError: Failed to fetch
+    at eval (page.tsx:26:5)
+    at commitHookEffectListMount (react-dom.development.js:21102:23)
+    at invokePassiveEffectMountInDEV (react-dom.development.js:23980:13)
+    at invokeEffectsInDev (react-dom.development.js:26852:9)
+    at legacyCommitDoubleInvokeEffectsInDEV (react-dom.development.js:26835:5)
+    at commitDoubleInvokeEffectsInDEV (react-dom.development.js:26816:7)
+    at flushPassiveEffectsImpl (react-dom.development.js:26514:5)
+    at flushPassiveEffects (react-dom.development.js:26438:14)
+    at eval (react-dom.development.js:26172:9)
+    at workLoop (scheduler.development.js:256:34)
+    at flushWork (scheduler.development.js:225:14)
+    at MessagePort.performWorkUntilDeadline (scheduler.development.js:534:21)
+window.console.error @ app-index.js:33
+Show 1 more frame
+Show less
+warn-once.js:16 Image with src "/image/pets.jpg" was detected as the Largest Contentful Paint (LCP). Please add the "priority" property if this image is above the fold.
+Read more: https://nextjs.org/docs/api-reference/next/image#priority
+warnOnce @ warn-once.js:16
+Show 1 more frame
+Show less
