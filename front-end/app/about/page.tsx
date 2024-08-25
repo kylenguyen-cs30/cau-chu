@@ -2,7 +2,7 @@ import React from "react";
 
 export default function About() {
   return (
-    <div className="p-4 w-full flex ">
+    <div className="p-4 w-full flex justify-center flex-col">
       <h1 className="text-4xl ">A Little About Us</h1>
       <p>
         Lorem ipsum odor amet, consectetuer adipiscing elit. Etiam vehicula

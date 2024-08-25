@@ -59,92 +59,104 @@ const AddPetModal = () => {
       <Button onClick={handleOpen}>Add your pet</Button>
       <PortalModal isOpen={isOpen} onClose={handleClose}>
         {/* input field  */}
-        <form onSubmit={handleSubmit}>
-          <label>Name</label>
+        <div title="Register New Pet">
+          <div onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label>Name</label>
 
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="border-2 border-black-100"
-          />
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="border-2 border-black-100"
+              />
+            </div>
 
-          <label>Type:</label>
+            <div>
+              <label>Type:</label>
 
-          <input
-            type="text"
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            className="border-2 border-black-100"
-          />
+              <input
+                type="text"
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                className="border-2 border-black-100"
+              />
+            </div>
+            <div>
+              <label>Price:</label>
 
-          <label>Price:</label>
+              <input
+                type="number"
+                value={price}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setPrice(value === "" ? 0 : parseFloat(value));
+                }}
+                className="border-2 border-black-100"
+              />
+            </div>
+            <div>
+              <label>Breed:</label>
 
-          <input
-            type="number"
-            value={price}
-            onChange={(e) => {
-              const value = e.target.value;
-              setPrice(value === "" ? 0 : parseFloat(value));
-            }}
-            className="border-2 border-black-100"
-          />
-          <label>Breed:</label>
+              <input
+                type="text"
+                value={breed}
+                onChange={(e) => setBreed(e.target.value)}
+                className="border-2 border-black-100"
+              />
+            </div>
 
-          <input
-            type="text"
-            value={breed}
-            onChange={(e) => setBreed(e.target.value)}
-            className="border-2 border-black-100"
-          />
+            <div>
+              <label>Gender:</label>
+              <select
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                className="border-2 border-black-100"
+              >
+                <option value="" disabled>
+                  Select Gender
+                </option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
 
-          <label>Gender:</label>
-          <select
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
-            className="border-2 border-black-100"
-          >
-            <option value="" disabled>
-              Select Gender
-            </option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
+            <div>
+              <label>Age(months): </label>
 
-          <label>Age(months): </label>
+              <input
+                type="number"
+                value={age}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setAge(value === "" ? 0 : parseInt(value));
+                }}
+                className="border-2 border-black-100"
+              />
+            </div>
 
-          <input
-            type="number"
-            value={age}
-            onChange={(e) => {
-              const value = e.target.value;
-              setAge(value === "" ? 0 : parseInt(value));
-            }}
-            className="border-2 border-black-100"
-          />
-          <label>Description: </label>
+            <div>
+              <label>Description: </label>
 
-          <input
-            type="text"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="border-2 border-black-100"
-          />
-          <label>Photo</label>
-          {/* Upload or add photolink */}
-          <input
-            type="file"
-            onChange={(e) => setImageFile(e.target.files?.[0] || null)}
-          />
+              <input
+                type="text"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="border-2 border-black-100"
+              />
+            </div>
 
-          <Button
-            type="submit"
-            // type="button"
-            // className="bg-blue-700 border-4 py-2 px-4 text-white"
-          >
-            Register
-          </Button>
-        </form>
+            <div>
+              <label>Photo</label>
+              {/* Upload or add photolink */}
+              <input
+                type="file"
+                onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+              />
+            </div>
+            <Button type="submit">Register</Button>
+          </div>
+        </div>
       </PortalModal>
     </div>
   );
