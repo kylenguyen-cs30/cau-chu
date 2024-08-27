@@ -9,18 +9,6 @@ from datetime import datetime, timedelta
 
 auth = Blueprint("auth", __name__)
 
-
-#
-# @auth.route("/login", methods=["POST"])
-# def login():
-#     pass
-#
-#
-# @auth.route("/logout", methods=["POST"])
-# @login_required
-# def logout():
-#     pass
-
 # store verification code temporarily
 verification_code = {}
 
@@ -33,7 +21,8 @@ def send_email(to_email, code):
     # extract data from environmental variables
     email_user = os.getenv("EMAIL_USER")
     email_pass = os.getenv("EMAIL_PASS")
-    smtp_server = os.getenv("SMTP_SERVER", "smtp.example.com")
+    smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+    print(f"Connecting to SMTP the server : {smtp_server}")
     try:
         # Use an email service to email the code
         server = smtplib.SMTP(smtp_server, 587)
@@ -90,6 +79,7 @@ def send_verification_code():
     if not user:
         return jsonify({"error" : "user not found"}), 404
     code = generate_verification_code()
+    print(f"code is {code}")
     expiration_time = datetime.utcnow() + timedelta(minutes=4)
     verification_code[email] = {'code' : code, 'expires' : expiration_time}
     send_email(email, code)
@@ -123,5 +113,17 @@ def verify_code():
 
 
     
+
+
+#
+# @auth.route("/login", methods=["POST"])
+# def login():
+#     pass
+#
+#
+# @auth.route("/logout", methods=["POST"])
+# @login_required
+# def logout():
+#     pass
 
 
