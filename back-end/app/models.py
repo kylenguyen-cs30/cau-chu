@@ -45,7 +45,7 @@ class Pet(db.Model):
 #     def __repr__(self) -> str:
 #         return f"<User {self.username}>"
 
-class User(db.model , UserMixin):
+class User(db.Model , UserMixin):
     id = db.Column(db.Integer , primary_key=True)
     username = db.Column(db.String(150), nullable=False, unique=True)
     email = db.Column(db.String(150), nullable=False, unique=True)

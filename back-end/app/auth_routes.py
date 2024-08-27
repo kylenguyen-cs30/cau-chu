@@ -46,12 +46,12 @@ def send_email(to_email, code):
         server.sendmail(email_user, to_email, message)
         server.quit()
     except Exception as e:
-        print(f"Failed to send email : {e}")
+        print(f"Failed to send email : {str(e)}")
 
 
 
- @auth.route("/register", methods=["POST"])
- def register():
+@auth.route("/register", methods=["POST"])
+def register():
     try:
         # Get Email from user 
         email = request.json.get("email")
@@ -77,7 +77,7 @@ def send_email(to_email, code):
 
     except Exception as e:
         print(f"Error registering user : {e}") 
-        return jsonify({"error" : "Failed to register user"})
+        return jsonify({"error" : f"Failed to register user : {str(e)}"}),500
 
 
 
@@ -95,7 +95,7 @@ def send_verification_code():
     send_email(email, code)
     return jsonify({"message" : "Verification code to the your email"}), 200
 
-@auth.route("/verify_code", method=["POST"])
+@auth.route("/verify_code", methods=["POST"])
 def verify_code():
     email = request.json.get("email")
     entered_code = request.json.get("code")
