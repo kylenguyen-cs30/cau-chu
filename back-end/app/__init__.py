@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from flask_login import LoginManager
 from sqlalchemy import inspect
 
 
@@ -17,6 +18,16 @@ def create_app():
     app.config["ALLOWED_EXTENSIONS"] = {"png", "jpg", "jpeg", "gif"}
 
     db.init_app(app)
+
+
+    #NOTE: initialize login manager 
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query(int(user_id))
+
 
     with app.app_context():
         # Import Models to ensure they are registered

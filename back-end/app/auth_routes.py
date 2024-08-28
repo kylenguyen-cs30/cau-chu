@@ -6,8 +6,10 @@ from flask import Blueprint, jsonify, request
 from .models import User
 from . import db
 from datetime import datetime, timedelta
+from flask_login import login_user, login_required, logout_user
 
 auth = Blueprint("auth", __name__)
+
 
 # store verification code temporarily
 verification_code = {}
@@ -104,15 +106,18 @@ def verify_code():
         return jsonify({"error" : "Invalid code"}), 400
 
     # Authenticate the user here 
-    token = "some_session_token_or_jwt"
 
-    del verification_code[email]
-    return jsonify({"message" : "Logged in Successfully" , "token" : token}), 200
-
-
-
-
+    user = User.query.filter_by(email=email).first()
+    if user:
+        login_user(user) 
+        token = "some_session_token_or_jwt"
+        del verification_code[email]
+        return jsonify({"message" : "Logged in Successfully" , "token" : token}), 200
+    else:
+        return jsonify({"error" : "User not found"}),404
     
+
+     
 
 
 #
@@ -121,9 +126,12 @@ def verify_code():
 #     pass
 #
 #
-# @auth.route("/logout", methods=["POST"])
-# @login_required
-# def logout():
-#     pass
+
+@auth.route("/logout", methods=["POST"])
+@login_required
+def logout():
+    logout_user()
+    return jsonify({"message" : "User Logged Out Successfully"}),200
+    
 
 
