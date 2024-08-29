@@ -1,34 +1,25 @@
-"use client";
 import Image from "next/image";
-import React, { useState } from "react";
-import axios, { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
+import React from "react";
 import Button from "../components/ui/button/page";
 
-export default function LoginPage() {
-  const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
-  const [showModal, setShowModal] = useState(false)
-  const [verificationCode, setVerificationCode] = useState<string[]>(Array(6).fill(""));
-  const [formData , setFormData] = useState({email: ""})
-
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.id]: e.target.value,
-    });
+interface RegisterFormProps {
+  formData: {
+    email: string;
+    username: string;
   };
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSubmit: (e: React.FormEvent) => void;
+  error: string | null;
+  handleBack: () => void;
+}
 
-  const handleSubmit = async (e: React.FormEvent) => {
-
-    }
-  };
-
-  // NOTE: going back to the homepage
-  const handleBack = () => {
-    router.push("/");
-  };
+const RegisterForm: React.FC<RegisterFormProps> = ({
+  formData,
+  handleBack,
+  handleChange,
+  error,
+  handleSubmit,
+}) => {
   return (
     <div className="fixed inset-0 flex flex-col justify-between items-center p-60 z-50">
       <div className=" relative  p-4 w-full max-h-full max-w-md rounded-lg shadow  ">
@@ -40,7 +31,7 @@ export default function LoginPage() {
             height={50}
             className="object-cover rounded"
           />
-          <h3 className="text-xl">Login</h3>
+          <h3 className="text-xl">Create your account</h3>
         </div>
 
         <form
@@ -61,9 +52,23 @@ export default function LoginPage() {
                 className="border rounded px-4 py-2"
               />
             </div>
+            <div className="mb-4 flex flex-col">
+              <label htmlFor="username" className="text-sm font-medium">
+                Username:{" "}
+              </label>
+              <input
+                type="username"
+                id="username"
+                value={formData.username}
+                onChange={handleChange}
+                required
+                className="border rounded px-4 py-2"
+              />
+            </div>
+
             {error && <p className="text-red-500">{error}</p>}
             <div className="flex p-3 justify-between m-5">
-              <Button type="submit">Login</Button>
+              <Button type="submit">Reigster</Button>
               <Button type="button" onClick={handleBack}>
                 Back
               </Button>
@@ -73,6 +78,6 @@ export default function LoginPage() {
       </div>
     </div>
   );
-}
+};
 
-
+export default RegisterForm;

@@ -1,0 +1,300 @@
+front-end structure: 
+
+front-end
+├── app
+│   ├── about
+│   │   └── page.tsx
+│   ├── components
+│   │   ├── addpet.tsx
+│   │   ├── Filterpets.tsx
+│   │   ├── Footer.tsx
+│   │   ├── Header.tsx
+│   │   ├── PetCard.tsx
+│   │   ├── PetGrid.tsx
+│   │   ├── portalModal.tsx
+│   │   ├── register-form.tsx
+│   │   └── ui
+│   │       └── button
+│   │           ├── page.module.css
+│   │           └── page.tsx
+│   ├── _document.tsx
+│   ├── globals.css
+│   ├── layout.tsx
+│   ├── login
+│   │   └── page.tsx
+│   ├── page.tsx
+│   └── signup
+│       └── page.tsx
+├── next.config.mjs
+├── next-env.d.ts
+├── package.json
+├── package-lock.json
+├── postcss.config.mjs
+├── public
+│   ├── favicon.ico
+│   ├── image
+│   │   ├── logo2.webp
+│   │   ├── logo3 copy.webp
+│   │   ├── logo3-cropped.png
+│   │   ├── logo3.webp
+│   │   ├── logo4.webp
+│   │   ├── logo.png
+│   │   └── pets.jpg
+│   ├── next.svg
+│   └── vercel.svg
+├── README.md
+├── tailwind.config.ts
+├── tsconfig.json
+└── yarn.lock
+
+10 directories, 36 files
+
+here are my back end structure : 
+
+
+back-end
+├── app
+│   ├── auth_routes.py
+│   ├── __init__.py
+│   ├── models.py
+│   ├── __pycache__
+│   │   ├── auth_routes.cpython-312.pyc
+│   │   ├── __init__.cpython-312.pyc
+│   │   ├── models.cpython-312.pyc
+│   │   └── routes.cpython-312.pyc
+│   └── routes.py
+├── app.py
+├── database_population.py
+├── instance
+│   └── site.db
+├── requirements.txt
+├── run.py
+├── tests
+│   └── test_api.py
+└── uploads
+    ├── beauty.jpg
+    ├── buddy.jpg
+    ├── cutie.jpg
+    ├── king.png
+    ├── mochi.jpg
+    ├── moon.jpg
+    └── Pasted_image.png
+
+6 directories, 21 files
+
+
+
+here are my code in app/login/page.tsx:
+"use client";
+import Image from "next/image";
+import React, { useState } from "react";
+import axios, { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
+import Button from "../components/ui/button/page";
+
+interface LoginFormData {
+  email: string;
+}
+
+export default function LoginPage() {
+  const router = useRouter();
+  const [formData, setFormData] = useState<LoginFormData>({
+    email: "",
+  });
+  const [error, setError] = useState<string | null>(null);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+
+    }
+  };
+
+  // NOTE: going back to the homepage
+  const handleBack = () => {
+    router.push("/");
+  };
+  return (
+    <div className="fixed inset-0 flex flex-col justify-between items-center p-60 z-50">
+      <div className=" relative  p-4 w-full max-h-full max-w-md rounded-lg shadow  ">
+        <div className="flex flex-col items-center justify-between  p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+          <Image
+            src="/image/logo3-cropped.png"
+            alt="logo"
+            width={50}
+            height={50}
+            className="object-cover rounded"
+          />
+          <h3 className="text-xl">Login</h3>
+        </div>
+
+        <form
+          onSubmit={handleSubmit}
+          className="p-4 md:p-5 justify-center items-center"
+        >
+          <div className="mb-4 flex flex-col">
+            <div className="mb-4 flex flex-col">
+              <label htmlFor="email" className="text-sm font-medium">
+                Email:{" "}
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className="border rounded px-4 py-2"
+              />
+            </div>
+            {error && <p className="text-red-500">{error}</p>}
+            <div className="flex p-3 justify-between m-5">
+              <Button type="submit">Login</Button>
+              <Button type="button" onClick={handleBack}>
+                Back
+              </Button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+here are my code in server side app/auth_routes.py: 
+
+import random
+import os
+import string
+import smtplib
+from flask import Blueprint, jsonify, request
+from .models import User
+from . import db
+from datetime import datetime, timedelta
+from flask_login import login_user, login_required, logout_user
+
+auth = Blueprint("auth", __name__)
+
+
+# store verification code temporarily
+verification_code = {}
+
+
+def generate_verification_code():
+    return "".join(random.choices(string.digits, k=6))
+
+
+def send_email(to_email, code):
+    # extract data from environmental variables
+    email_user = os.getenv("EMAIL_USER")
+    email_pass = os.getenv("EMAIL_PASS")
+    smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+    print(f"Connecting to SMTP the server : {smtp_server}")
+    try:
+        # Use an email service to email the code
+        server = smtplib.SMTP(smtp_server, 587)
+        server.starttls()
+        server.login(email_user, email_pass)
+
+        # content
+        subject = "Cau Chu Verification Code"
+        message = f"Subject: {subject} \n\n Your verification code : {code}"
+        server.sendmail(email_user, to_email, message)
+        server.quit()
+    except Exception as e:
+        print(f"Failed to send email : {str(e)}")
+
+
+@auth.route("/register", methods=["POST"])
+def register():
+    try:
+        # Get Email from user
+        email = request.json.get("email")
+        username = request.json.get("username")
+
+        # check if the user already existed
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            return jsonify({"error": "User with this email already existed"}), 400
+
+        # create an new user
+        new_user = User(email=email, username=username)
+
+        # add the user to the database
+        db.session.add(new_user)
+        db.session.commit()
+
+        return jsonify({"message": "User Register Successfully "}), 201
+
+    except Exception as e:
+        print(f"Error registering user : {e}")
+        return jsonify({"error": f"Failed to register user : {str(e)}"}), 500
+
+
+@auth.route("/send_verification_code", methods=["POST"])
+def send_verification_code():
+    # when user try to login from the page. the application will prompt user to enter the verification code
+    email = request.json.get("email")
+    user = User.query.filter_by(email=email).first()
+
+    if not user:
+        return jsonify({"error": "user not found"}), 404
+    code = generate_verification_code()
+    print(f"code is {code}")
+    expiration_time = datetime.utcnow() + timedelta(minutes=4)
+    verification_code[email] = {"code": code, "expires": expiration_time}
+    send_email(email, code)
+    return jsonify({"message": "Verification code to the your email"}), 200
+
+
+@auth.route("/verify_code", methods=["POST"])
+def verify_code():
+    email = request.json.get("email")
+    entered_code = request.json.get("code")
+
+    # no code exist
+    if email not in verification_code:
+        return jsonify({"error": "No Verification code for this email "}), 404
+
+    store_code_info = verification_code[email]
+    # timer expired
+    if datetime.utcnow() > store_code_info["expires"]:
+        del verification_code[email]
+        return jsonify({"error": "Timer has expired"}), 400
+
+    if entered_code != store_code_info["code"]:
+        return jsonify({"error": "Invalid code"}), 400
+
+    # Authenticate the user here
+
+    user = User.query.filter_by(email=email).first()
+    if user:
+        login_user(user)
+        token = "some_session_token_or_jwt"
+        del verification_code[email]
+        return jsonify({"message": "Logged in Successfully", "token": token}), 200
+    else:
+        return jsonify({"error": "User not found"}), 404
+
+
+#
+# @auth.route("/login", methods=["POST"])
+# def login():
+#     pass
+#
+#
+
+
+@auth.route("/logout", methods=["POST"])
+@login_required
+def logout():
+    logout_user()
+    return jsonify({"message": "User Logged Out Successfully"}), 200
+
+
+@auth.route("/remove_user", methods=["DELETE"])
+def remove_user(id):
+    user = User.query.filter_by(id=id).first()
