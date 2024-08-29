@@ -5,14 +5,16 @@ import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import Button from "../components/ui/button/page";
 
-interface LoginFormData {
+interface SignupFormData {
+  username: string;
   email: string;
 }
 
-export default function LoginPage() {
+export default function SignupPage() {
   const router = useRouter();
-  const [formData, setFormData] = useState<LoginFormData>({
+  const [formData, setFormData] = useState<SignupFormData>({
     email: "",
+    username: "",
   });
   const [error, setError] = useState<string | null>(null);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,7 +66,7 @@ export default function LoginPage() {
             height={50}
             className="object-cover rounded"
           />
-          <h3 className="text-xl">Login</h3>
+          <h3 className="text-xl">Create your account</h3>
         </div>
 
         <form
@@ -85,9 +87,23 @@ export default function LoginPage() {
                 className="border rounded px-4 py-2"
               />
             </div>
+            <div className="mb-4 flex flex-col">
+              <label htmlFor="username" className="text-sm font-medium">
+                Username:{" "}
+              </label>
+              <input
+                type="username"
+                id="username"
+                value={formData.username}
+                onChange={handleChange}
+                required
+                className="border rounded px-4 py-2"
+              />
+            </div>
+
             {error && <p className="text-red-500">{error}</p>}
             <div className="flex p-3 justify-between m-5">
-              <Button type="submit">Login</Button>
+              <Button type="submit">Reigster</Button>
               <Button type="button" onClick={handleBack}>
                 Back
               </Button>
@@ -97,47 +113,4 @@ export default function LoginPage() {
       </div>
     </div>
   );
-}
-
-{
-  /* <div className="mb-4 flex flex-col"> */
-}
-{
-  /*   <label htmlFor="username" className="text-sm font-medium"> */
-}
-{
-  /*     Username:{" "} */
-}
-{
-  /*   </label> */
-}
-{
-  /*   <input */
-}
-{
-  /*     type="username" */
-}
-{
-  /*     id="username" */
-}
-{
-  /*     value={formData.username} */
-}
-{
-  /*     onChange={handleChange} */
-}
-{
-  /*     required */
-}
-{
-  /*     className="border rounded px-4 py-2" */
-}
-{
-  /*   /> */
-}
-{
-  /* </div> */
-}
-{
-  /**/
 }

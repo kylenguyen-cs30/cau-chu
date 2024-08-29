@@ -41,10 +41,12 @@ const Header = () => {
               <a className="block py-2 px-3 rounded">Pricing</a>
             </li>
             <li>
-              <a className="block py-2 px-3 rounded">Login</a>
+              <a href="/login" className="block py-2 px-3 rounded">
+                Login
+              </a>
             </li>
             <li>
-              <a href="" className="block py-2 px-3 rounded">
+              <a href="/signup" className="block py-2 px-3 rounded">
                 Sign up
               </a>
             </li>

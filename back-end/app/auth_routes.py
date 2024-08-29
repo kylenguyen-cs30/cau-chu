@@ -40,52 +40,47 @@ def send_email(to_email, code):
         print(f"Failed to send email : {str(e)}")
 
 
-
 @auth.route("/register", methods=["POST"])
 def register():
     try:
-        # Get Email from user 
+        # Get Email from user
         email = request.json.get("email")
         username = request.json.get("username")
 
-        # check if the user already existed 
+        # check if the user already existed
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
-            return jsonify({"error" : "User with this email already existed"}), 400
+            return jsonify({"error": "User with this email already existed"}), 400
 
-        # create an new user 
-        new_user = User(    
-            email=email,
-            username=username
-        )
+        # create an new user
+        new_user = User(email=email, username=username)
 
-        # add the user to the database 
+        # add the user to the database
         db.session.add(new_user)
         db.session.commit()
 
-        return jsonify({"message" : "User Register Successfully "}), 201
-
+        return jsonify({"message": "User Register Successfully "}), 201
 
     except Exception as e:
-        print(f"Error registering user : {e}") 
-        return jsonify({"error" : f"Failed to register user : {str(e)}"}),500
+        print(f"Error registering user : {e}")
+        return jsonify({"error": f"Failed to register user : {str(e)}"}), 500
 
 
-
-@auth.route("/send_verification_code" , methods=["POST"])
+@auth.route("/send_verification_code", methods=["POST"])
 def send_verification_code():
-    # when user try to login from the page. the application will prompt user to enter the verification code 
+    # when user try to login from the page. the application will prompt user to enter the verification code
     email = request.json.get("email")
     user = User.query.filter_by(email=email).first()
 
     if not user:
-        return jsonify({"error" : "user not found"}), 404
+        return jsonify({"error": "user not found"}), 404
     code = generate_verification_code()
     print(f"code is {code}")
     expiration_time = datetime.utcnow() + timedelta(minutes=4)
-    verification_code[email] = {'code' : code, 'expires' : expiration_time}
+    verification_code[email] = {"code": code, "expires": expiration_time}
     send_email(email, code)
-    return jsonify({"message" : "Verification code to the your email"}), 200
+    return jsonify({"message": "Verification code to the your email"}), 200
+
 
 @auth.route("/verify_code", methods=["POST"])
 def verify_code():
@@ -94,30 +89,27 @@ def verify_code():
 
     # no code exist
     if email not in verification_code:
-        return jsonify({"error" : "No Verification code for this email " }),404 
-    
+        return jsonify({"error": "No Verification code for this email "}), 404
+
     store_code_info = verification_code[email]
-    # timer expired 
-    if datetime.utcnow() > store_code_info['expires']:
+    # timer expired
+    if datetime.utcnow() > store_code_info["expires"]:
         del verification_code[email]
-        return jsonify({"error" : "Timer has expired"}), 400
+        return jsonify({"error": "Timer has expired"}), 400
 
-    if entered_code != store_code_info['code'] : 
-        return jsonify({"error" : "Invalid code"}), 400
+    if entered_code != store_code_info["code"]:
+        return jsonify({"error": "Invalid code"}), 400
 
-    # Authenticate the user here 
+    # Authenticate the user here
 
     user = User.query.filter_by(email=email).first()
     if user:
-        login_user(user) 
+        login_user(user)
         token = "some_session_token_or_jwt"
         del verification_code[email]
-        return jsonify({"message" : "Logged in Successfully" , "token" : token}), 200
+        return jsonify({"message": "Logged in Successfully", "token": token}), 200
     else:
-        return jsonify({"error" : "User not found"}),404
-    
-
-     
+        return jsonify({"error": "User not found"}), 404
 
 
 #
@@ -127,11 +119,14 @@ def verify_code():
 #
 #
 
+
 @auth.route("/logout", methods=["POST"])
 @login_required
 def logout():
     logout_user()
-    return jsonify({"message" : "User Logged Out Successfully"}),200
-    
+    return jsonify({"message": "User Logged Out Successfully"}), 200
 
 
+@auth.route("/remove_user", methods=["DELETE"])
+def remove_user(id):
+    user = User.query.filter_by(id=id).first()
