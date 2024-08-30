@@ -14,10 +14,10 @@ const PortalModal = ({ isOpen, onClose, children }) => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 p-60 grid gap-4 w-full h-[calc(100%-rem) max-h-full ">
           <div className="relative p-4 w-full max-w-md max-h-full">
             {/* Modal Content */}
-            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <div className="relative bg-white rounded-lg shadow ">
               {/* Modal Header */}
               <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                <h3 className="text-xl font-semibold text-gray-900 ">
                   {children.props.title || "default Title"}
                 </h3>
 
@@ -35,9 +35,9 @@ const PortalModal = ({ isOpen, onClose, children }) => {
                   >
                     <path
                       stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
                     />
                   </svg>

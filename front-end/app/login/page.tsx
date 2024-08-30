@@ -4,15 +4,18 @@ import React, { useState } from "react";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import Button from "../components/ui/button/page";
+import PortalModal from "../components/portalModal";
 
 export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
-  const [showModal, setShowModal] = useState(false)
-  const [verificationCode, setVerificationCode] = useState<string[]>(Array(6).fill(""));
-  const [formData , setFormData] = useState({email: ""})
+  const [showModal, setShowModal] = useState(false);
+  const [verificationCode, setVerificationCode] = useState<string[]>(
+    Array(6).fill(""),
+  );
+  const [formData, setFormData] = useState({ email: "" });
 
-
+  // NOTE: handle change the input
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -20,8 +23,55 @@ export default function LoginPage() {
     });
   };
 
+  // NOTE: submit data to /send_verification_code backend server
   const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:5000/send_verification_code",
+        {
+          email: formData.email,
+        },
+      );
 
+      if (response.status === 200) {
+        setShowModal(true); // show the modal on success
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data?.error || "An unexpected error occurred");
+      } else {
+        setError("An Unexpected error occurred");
+      }
+    }
+  };
+
+  // NOTE: handle verification code
+  const handleVerificationChange = (index: number, value: string) => {
+    const newCode = [...verificationCode];
+    newCode[index] = value;
+    setVerificationCode(newCode);
+  };
+
+  // NOTE: navigate verified user back to homepage
+  const handleVerify = async () => {
+    const code = verificationCode.join("");
+    try {
+      const response = await axios.post("http://127.0.0.1:5000/verify_code", {
+        email: formData.email,
+        code,
+      });
+
+      if (response.status === 200) {
+        setShowModal(false); // close the modal
+        console.log("Login successfully");
+        window.location.href = "/"; // navigate the users to the homepage
+      } else {
+        alert("incorrect code, try again!!");
+      }
+    } catch (error) {
+      setError(error.response?.data?.error || "Invalid code");
     }
   };
 
@@ -71,8 +121,31 @@ export default function LoginPage() {
           </div>
         </form>
       </div>
+
+      {/* Conditionally render modal  */}
+      {showModal && (
+        <PortalModal isOpen={showModal} onClose={() => setShowModal(false)}>
+          <div>
+            <h3 className="text-xl mb-4">Enter Verification Code</h3>
+            <div>
+              {verificationCode.map((digit, index) => (
+                <input
+                  key={index}
+                  type="text"
+                  maxLength={1}
+                  value={digit}
+                  onChange={(e) =>
+                    handleVerificationChange(index, e.target.value)
+                  }
+                  className="w-12 h-12 text-center border rounded"
+                />
+              ))}
+            </div>
+            {error && <p className="text-red-500">{error}</p>}
+            <Button onClick={handleVerify}>Login</Button>
+          </div>
+        </PortalModal>
+      )}
     </div>
   );
 }
-
-
