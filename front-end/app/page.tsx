@@ -19,21 +19,34 @@ interface Pet {
 
 export default function Home() {
   const [pets, setPets] = useState<Pet[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     fetch("http://127.0.0.1:5000/pets")
       .then((res) => {
         if (!res.ok) {
-          throw new Error("Network response was not okay");
+          throw new Error("Network response was not okay"); // check the server connection
         }
         return res.json();
       })
       .then((data) => {
         console.log("Fetched data", data);
         setPets(data);
+        setError(null);
       })
-      .catch((error) => console.error("Error fetching pets:", error));
+      .catch((error) => {
+        console.error("Error fetching pets:", error);
+        setError(`Failed to fetch pets: ${error.message}`);
+      }) // error fetching
+      .finally(() => {
+        setLoading(false); // ensuere we stop loading after fetch
+      });
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">

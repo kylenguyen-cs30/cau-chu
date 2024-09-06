@@ -1,45 +1,9 @@
-app-index.js:33 Warning: Extra attributes from the server: data-new-gr-c-s-check-loaded,data-gr-ext-installed
-    at body
-    at html
-    at RootLayout (Server)
-    at RedirectErrorBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/redirect-boundary.js:74:9)
-    at RedirectBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/redirect-boundary.js:82:11)
-    at NotFoundErrorBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/not-found-boundary.js:76:9)
-    at NotFoundBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/not-found-boundary.js:84:11)
-    at DevRootNotFoundBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/dev-root-not-found-boundary.js:33:11)
-    at ReactDevOverlay (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/react-dev-overlay/app/ReactDevOverlay.js:87:9)
-    at HotReload (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/react-dev-overlay/app/hot-reloader-client.js:321:11)
-    at Router (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/app-router.js:207:11)
-    at ErrorBoundaryHandler (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/error-boundary.js:113:9)
-    at ErrorBoundary (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/error-boundary.js:160:11)
-    at AppRouter (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/components/app-router.js:585:13)
-    at ServerRoot (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/app-index.js:112:27)
-    at Root (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/client/app-index.js:117:11)
-window.console.error @ app-index.js:33
-console.error @ hydration-error-info.js:63
-printWarning @ react-dom.development.js:94
-error @ react-dom.development.js:68
-warnForExtraAttributes @ react-dom.development.js:32731
-diffHydratedProperties @ react-dom.development.js:35117
-hydrateInstance @ react-dom.development.js:36127
-prepareToHydrateHostInstance @ react-dom.development.js:7246
-completeWork @ react-dom.development.js:19725
-completeUnitOfWork @ react-dom.development.js:25963
-performUnitOfWork @ react-dom.development.js:25759
-workLoopConcurrent @ react-dom.development.js:25734
-renderRootConcurrent @ react-dom.development.js:25690
-performConcurrentWorkOnRoot @ react-dom.development.js:24504
-workLoop @ scheduler.development.js:256
-flushWork @ scheduler.development.js:225
-performWorkUntilDeadline @ scheduler.development.js:534
-Show 17 more frames
-Show less
 localhost/:1 Access to fetch at 'http://127.0.0.1:5000/pets' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
-page.tsx:24 
+page.tsx:26 
         
         
-       GET http://127.0.0.1:5000/pets net::ERR_FAILED 200 (OK)
-eval @ page.tsx:24
+       GET http://127.0.0.1:5000/pets net::ERR_FAILED 403 (Forbidden)
+eval @ page.tsx:26
 commitHookEffectListMount @ react-dom.development.js:21102
 commitHookPassiveMountEffects @ react-dom.development.js:23154
 commitPassiveMountOnFiber @ react-dom.development.js:23259
@@ -138,8 +102,8 @@ flushWork @ scheduler.development.js:225
 performWorkUntilDeadline @ scheduler.development.js:534
 Show 96 more frames
 Show less
-page.tsx:35 Error fetching pets: TypeError: Failed to fetch
-    at eval (page.tsx:24:5)
+page.tsx:39 Error fetching pets: TypeError: Failed to fetch
+    at eval (page.tsx:26:5)
     at commitHookEffectListMount (react-dom.development.js:21102:23)
     at commitHookPassiveMountEffects (react-dom.development.js:23154:7)
     at commitPassiveMountOnFiber (react-dom.development.js:23259:11)
@@ -191,9 +155,9 @@ page.tsx:35 Error fetching pets: TypeError: Failed to fetch
     at commitPassiveMountOnFiber (react-dom.development.js:23370:9)
 window.console.error @ app-index.js:33
 console.error @ hydration-error-info.js:63
-eval @ page.tsx:35
+eval @ page.tsx:39
 Promise.catch
-eval @ page.tsx:35
+eval @ page.tsx:38
 commitHookEffectListMount @ react-dom.development.js:21102
 commitHookPassiveMountEffects @ react-dom.development.js:23154
 commitPassiveMountOnFiber @ react-dom.development.js:23259
@@ -293,11 +257,11 @@ performWorkUntilDeadline @ scheduler.development.js:534
 Show 98 more frames
 Show less
 localhost/:1 Access to fetch at 'http://127.0.0.1:5000/pets' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. If an opaque response serves your needs, set the request's mode to 'no-cors' to fetch the resource with CORS disabled.
-page.tsx:24 
+page.tsx:26 
         
         
-       GET http://127.0.0.1:5000/pets net::ERR_FAILED 200 (OK)
-eval @ page.tsx:24
+       GET http://127.0.0.1:5000/pets net::ERR_FAILED 403 (Forbidden)
+eval @ page.tsx:26
 commitHookEffectListMount @ react-dom.development.js:21102
 invokePassiveEffectMountInDEV @ react-dom.development.js:23980
 invokeEffectsInDev @ react-dom.development.js:26852
@@ -311,8 +275,8 @@ flushWork @ scheduler.development.js:225
 performWorkUntilDeadline @ scheduler.development.js:534
 Show 11 more frames
 Show less
-page.tsx:35 Error fetching pets: TypeError: Failed to fetch
-    at eval (page.tsx:24:5)
+page.tsx:39 Error fetching pets: TypeError: Failed to fetch
+    at eval (page.tsx:26:5)
     at commitHookEffectListMount (react-dom.development.js:21102:23)
     at invokePassiveEffectMountInDEV (react-dom.development.js:23980:13)
     at invokeEffectsInDev (react-dom.development.js:26852:9)
@@ -326,9 +290,9 @@ page.tsx:35 Error fetching pets: TypeError: Failed to fetch
     at MessagePort.performWorkUntilDeadline (scheduler.development.js:534:21)
 window.console.error @ app-index.js:33
 console.error @ hydration-error-info.js:63
-eval @ page.tsx:35
+eval @ page.tsx:39
 Promise.catch
-eval @ page.tsx:35
+eval @ page.tsx:38
 commitHookEffectListMount @ react-dom.development.js:21102
 invokePassiveEffectMountInDEV @ react-dom.development.js:23980
 invokeEffectsInDev @ react-dom.development.js:26852
