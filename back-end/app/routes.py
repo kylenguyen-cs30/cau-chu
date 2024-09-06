@@ -162,7 +162,7 @@ def populate_pets():
 @main.route("/delete_pet/<int:pet_id>", methods=["DELETE"])
 def delete_pet(pet_id):
     try:
-        pet = Pet.filter_by(id).first()
+        pet = Pet.query.filter_by(id).first()
         # that pet exist
         if pet:
             db.session.delete(pet)

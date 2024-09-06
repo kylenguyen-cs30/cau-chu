@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_login import LoginManager
@@ -11,8 +11,11 @@ db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
-    # CORS(app, origins=["http://localhost:3000/"])
-    CORS(app)
+    CORS(app, origins=["http://localhost:3000"])
+    # CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:3000"}})
+
+    # CORS(app, origins="*")
+    # CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -20,6 +23,10 @@ def create_app():
     app.config["ALLOWED_EXTENSIONS"] = {"png", "jpg", "jpeg", "gif"}
 
     db.init_app(app)
+
+    @app.route("/test")
+    def test():
+        return jsonify({"message": "CORS is working!"})
 
     # NOTE: Secret_Key generating
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "DEFAULT_KEY")
