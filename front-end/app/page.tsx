@@ -23,7 +23,14 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:5000/pets")
+    fetch("http://127.0.0.1/pets", {
+      // http://127.0.0.1:5000/pets http://backend:5000/pets
+      method: "GET",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((res) => {
         if (!res.ok) {
           throw new Error("Network response was not okay"); // check the server connection
