@@ -11,16 +11,6 @@ db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
-    # CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:3000"}})
-
-    # CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
-
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    app.config["UPLOAD_FOLDER"] = "uploads"
-    app.config["ALLOWED_EXTENSIONS"] = {"png", "jpg", "jpeg", "gif"}
-
-    # CORS(app, origins=["http://localhost:3000"])
     CORS(
         app,
         resources={r"/*": {"origins": "http://localhost:3000"}},
@@ -32,6 +22,16 @@ def create_app():
             "Access-Control-Allow-Credentials",
         ],
     )
+    # CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:3000"}})
+
+    # CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["UPLOAD_FOLDER"] = "uploads"
+    app.config["ALLOWED_EXTENSIONS"] = {"png", "jpg", "jpeg", "gif"}
+
+    # CORS(app, origins=["http://localhost:3000"])
 
     # CORS(app)
     db.init_app(app)

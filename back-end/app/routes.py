@@ -80,7 +80,8 @@ def list_pets():
             "price": pet.price,
             "breed": pet.breed,
             "description": pet.description,
-            "imageURL": request.host_url + "uploads/" + pet.imageFilename,
+            # "imageURL": request.host_url + "uploads/" + pet.imageFilename,
+            "imageURL": "http://backend:5000/uploads/" + pet.imageFilename,
         }
         for pet in pets
     ]

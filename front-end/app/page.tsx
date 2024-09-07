@@ -19,18 +19,11 @@ interface Pet {
 
 export default function Home() {
   const [pets, setPets] = useState<Pet[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch("http://127.0.0.1/pets", {
-      // http://127.0.0.1:5000/pets http://backend:5000/pets
-      method: "GET",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+    fetch("http://localhost:5001/pets")
       .then((res) => {
         if (!res.ok) {
           throw new Error("Network response was not okay"); // check the server connection
@@ -40,11 +33,11 @@ export default function Home() {
       .then((data) => {
         console.log("Fetched data", data);
         setPets(data);
-        setError(null);
+        // setError(null);
       })
       .catch((error) => {
         console.error("Error fetching pets:", error);
-        setError(`Failed to fetch pets: ${error.message}`);
+        // setError(`Failed to fetch pets: ${error.message}`);
       }) // error fetching
       .finally(() => {
         setLoading(false); // ensuere we stop loading after fetch

@@ -8,6 +8,7 @@ services:
     volumes:
       - ./back-end:/app
       - sqlite_data:/app/instance
+      - ./back-end/uploads:/app/uploads
     environment:
       FLASK_ENV: development
     # depends_on:
