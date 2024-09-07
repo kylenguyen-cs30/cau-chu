@@ -11,6 +11,8 @@ services:
       - ./back-end/uploads:/app/uploads
     environment:
       FLASK_ENV: development
+    env_file:
+      - ./back-end/.env
     # depends_on:
     #   - db
 

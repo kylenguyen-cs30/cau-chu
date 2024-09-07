@@ -11,6 +11,10 @@ from flask_login import login_user, login_required, logout_user
 auth = Blueprint("auth", __name__)
 
 
+SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+EMAIL_USER = os.getenv("EMAIL_USER")
+EMAIL_PASS = os.getenv("EMAIL_PASS")
+
 # store verification code temporarily
 verification_code = {}
 
@@ -19,25 +23,45 @@ def generate_verification_code():
     return "".join(random.choices(string.digits, k=6))
 
 
-def send_email(to_email, code):
-    # extract data from environmental variables
-    email_user = os.getenv("EMAIL_USER")
-    email_pass = os.getenv("EMAIL_PASS")
-    smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
-    print(f"Connecting to SMTP the server : {smtp_server}")
-    try:
-        # Use an email service to email the code
-        server = smtplib.SMTP(smtp_server, 587)
-        server.starttls()
-        server.login(email_user, email_pass)
+#
+# def send_email(to_email, code):
+#     # extract data from environmental variables
+#     email_user = os.getenv("EMAIL_USER")
+#     email_pass = os.getenv("EMAIL_PASS")
+#     smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+#     print(f"Connecting to SMTP the server : {smtp_server}")
+#     try:
+#         # Use an email service to email the code
+#         server = smtplib.SMTP(smtp_server, 587)
+#         server.starttls()
+#         server.login(email_user, email_pass)
+#
+#         # content
+#         subject = "Cau Chu Verification Code"
+#         message = f"Subject: {subject} \n\n Your verification code : {code}"
+#         server.sendmail(email_user, to_email, message)
+#         server.quit()
+#     except Exception as e:
+#         print(f"Failed to send email : {str(e)}")
+#
 
-        # content
+
+class EmailClient:
+    def __init__(self) -> None:
+        self.server = smtplib.SMTP(SMTP_SERVER, 587)
+        self.server.starttls()
+        self.server.login(EMAIL_USER, EMAIL_PASS)
+
+    def send_email(self, to_email, code):
         subject = "Cau Chu Verification Code"
-        message = f"Subject: {subject} \n\n Your verification code : {code}"
-        server.sendmail(email_user, to_email, message)
-        server.quit()
-    except Exception as e:
-        print(f"Failed to send email : {str(e)}")
+        message = f"Subject : {subject}  \n\n Your Verification Code : {code}"
+        self.server.sendemail(EMAIL_USER, to_email, message)
+
+    def close(self):
+        self.server.quit()
+
+
+email_client = EmailClient()
 
 
 @auth.route("/register", methods=["POST"])
@@ -78,7 +102,8 @@ def send_verification_code():
     print(f"code is {code}")
     expiration_time = datetime.utcnow() + timedelta(minutes=4)
     verification_code[email] = {"code": code, "expires": expiration_time}
-    send_email(email, code)
+    # send_email(email, code)
+    email_client.send_email(email, code)
     return jsonify({"message": "Verification code to the your email"}), 200
 
 

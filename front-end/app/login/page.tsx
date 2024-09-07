@@ -29,7 +29,7 @@ export default function LoginPage() {
     setError(null);
     try {
       const response = await axios.post(
-        "http://127.0.0.1:5000/send_verification_code",
+        "http://localhost:5001/send_verification_code",
         {
           email: formData.email,
         },
@@ -58,7 +58,7 @@ export default function LoginPage() {
   const handleVerify = async () => {
     const code = verificationCode.join("");
     try {
-      const response = await axios.post("http://127.0.0.1:5000/verify_code", {
+      const response = await axios.post("http://localhost:5001/verify_code", {
         email: formData.email,
         code,
       });

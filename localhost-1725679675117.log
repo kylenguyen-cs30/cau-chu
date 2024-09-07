@@ -1,0 +1,5 @@
+signup:1 Access to XMLHttpRequest at 'http://localhost:5001/register' from origin 'http://localhost:3000' has been blocked by CORS policy: Request header field content-type is not allowed by Access-Control-Allow-Headers in preflight response.
+:5001/register:1 
+        
+        
+       Failed to load resource: net::ERR_FAILED

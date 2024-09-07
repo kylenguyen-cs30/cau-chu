@@ -30,7 +30,7 @@ export default function SignupPage() {
     e.preventDefault();
     setError(null);
     try {
-      const res = await axios.post("http://127.0.0.1:5000/register", formData, {
+      const res = await axios.post("http://localhost:5001/register", formData, {
         headers: {
           "Content-Type": "application/json",
         },
