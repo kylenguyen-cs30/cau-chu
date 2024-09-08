@@ -1,0 +1,10 @@
+warn-once.js:16 Image with src "/image/logo3-cropped.png" was detected as the Largest Contentful Paint (LCP). Please add the "priority" property if this image is above the fold.
+Read more: https://nextjs.org/docs/api-reference/next/image#priority
+warnOnce @ warn-once.js:16
+Show 1 more frame
+Show less
+login:1 Access to XMLHttpRequest at 'http://localhost:5001/send_verification_code' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+:5001/send_verification_code:1 
+        
+        
+       Failed to load resource: net::ERR_FAILED

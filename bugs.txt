@@ -1,15 +1,73 @@
-signup:1 Access to XMLHttpRequest at 'http://localhost:5001/register' from origin 'http://localhost:3000' has been blocked by CORS policy: Request header field content-type is not allowed by Access-Control-Allow-Headers in preflight response.
-:5001/register:1 
-        
-        
-       Failed to load resource: net::ERR_FAILED
 
-
-docker-compose logs backend: 
-
-backend-1  | INFO:werkzeug:192.168.65.1 - - [07/Sep/2024 03:22:46] "GET /pets HTTP/1.1" 200 -
-backend-1  | 192.168.65.1 - - [07/Sep/2024 03:22:52] "GET / HTTP/1.1" 200 -
-backend-1  | INFO:werkzeug:192.168.65.1 - - [07/Sep/2024 03:22:52] "GET / HTTP/1.1" 200 -
-backend-1  | 192.168.65.1 - - [07/Sep/2024 03:22:57] "GET /register HTTP/1.1" 405 -
-backend-1  | INFO:werkzeug:192.168.65.1 - - [07/Sep/2024 03:22:57] "GET /register HTTP/1.1" 405 -
+╰─ docker-compose logs backend
+❯ docker-compose logs backend
+WARN[0000] /Users/khanhnguyen/Developer/projects/cau-chu/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
+backend-1  | EMAIL_USER:cauchu.business@gmail.com
+backend-1  | EMAIL_PASS:hzhm wnzo pvlr wwxw
+backend-1  |  * Serving Flask app 'app'
+backend-1  |  * Debug mode: on
+backend-1  | WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+backend-1  |  * Running on all addresses (0.0.0.0)
+backend-1  |  * Running on http://127.0.0.1:5000
+backend-1  |  * Running on http://172.18.0.2:5000
+backend-1  | Press CTRL+C to quit
+backend-1  |  * Restarting with stat
+backend-1  |  * Debugger is active!
+backend-1  |  * Debugger PIN: 915-416-914
+backend-1  | 192.168.65.1 - - [07/Sep/2024 22:25:20] "GET /pets HTTP/1.1" 200 -
+backend-1  | 192.168.65.1 - - [07/Sep/2024 22:25:20] "GET /pets HTTP/1.1" 200 -
+backend-1  | 172.18.0.3 - - [07/Sep/2024 22:25:20] "GET /uploads/buddy.jpg HTTP/1.1" 200 -
+backend-1  | INFO:werkzeug:172.18.0.3 - - [07/Sep/2024 22:25:20] "GET /uploads/buddy.jpg HTTP/1.1" 200 -
+backend-1  | 172.18.0.3 - - [07/Sep/2024 22:25:20] "GET /uploads/mochi.jpg HTTP/1.1" 200 -
+backend-1  | INFO:werkzeug:172.18.0.3 - - [07/Sep/2024 22:25:20] "GET /uploads/mochi.jpg HTTP/1.1" 200 -
+backend-1  | 172.18.0.3 - - [07/Sep/2024 22:25:20] "GET /uploads/moon.jpg HTTP/1.1" 200 -
+backend-1  | INFO:werkzeug:172.18.0.3 - - [07/Sep/2024 22:25:20] "GET /uploads/moon.jpg HTTP/1.1" 200 -
+backend-1  | 172.18.0.3 - - [07/Sep/2024 22:25:20] "GET /uploads/beauty.jpg HTTP/1.1" 200 -
+backend-1  | INFO:werkzeug:172.18.0.3 - - [07/Sep/2024 22:25:20] "GET /uploads/beauty.jpg HTTP/1.1" 200 -
+backend-1  | 192.168.65.1 - - [08/Sep/2024 05:27:57] "GET /pets HTTP/1.1" 200 -
+backend-1  | INFO:werkzeug:192.168.65.1 - - [08/Sep/2024 05:27:57] "GET /pets HTTP/1.1" 200 -
+backend-1  | 192.168.65.1 - - [08/Sep/2024 05:27:57] "GET /pets HTTP/1.1" 200 -
+backend-1  | INFO:werkzeug:192.168.65.1 - - [08/Sep/2024 05:27:57] "GET /pets HTTP/1.1" 200 -
+backend-1  | 172.18.0.3 - - [08/Sep/2024 05:27:57] "GET /uploads/buddy.jpg HTTP/1.1" 200 -
+backend-1  | INFO:werkzeug:172.18.0.3 - - [08/Sep/2024 05:27:57] "GET /uploads/buddy.jpg HTTP/1.1" 200 -
+backend-1  | 172.18.0.3 - - [08/Sep/2024 05:27:57] "GET /uploads/beauty.jpg HTTP/1.1" 200 -
+backend-1  | INFO:werkzeug:172.18.0.3 - - [08/Sep/2024 05:27:57] "GET /uploads/beauty.jpg HTTP/1.1" 200 -
+backend-1  | 172.18.0.3 - - [08/Sep/2024 05:27:57] "GET /uploads/moon.jpg HTTP/1.1" 200 -
+backend-1  | INFO:werkzeug:172.18.0.3 - - [08/Sep/2024 05:27:57] "GET /uploads/moon.jpg HTTP/1.1" 200 -
+backend-1  | 172.18.0.3 - - [08/Sep/2024 05:27:57] "GET /uploads/mochi.jpg HTTP/1.1" 200 -
+backend-1  | INFO:werkzeug:172.18.0.3 - - [08/Sep/2024 05:27:57] "GET /uploads/mochi.jpg HTTP/1.1" 200 -
+backend-1  | 192.168.65.1 - - [08/Sep/2024 05:28:10] "OPTIONS /send_verification_code HTTP/1.1" 200 -
+backend-1  | INFO:werkzeug:192.168.65.1 - - [08/Sep/2024 05:28:10] "OPTIONS /send_verification_code HTTP/1.1" 200 -
+backend-1  | 192.168.65.1 - - [08/Sep/2024 05:28:10] "POST /send_verification_code HTTP/1.1" 500 -
+backend-1  | INFO:werkzeug:192.168.65.1 - - [08/Sep/2024 05:28:10] "POST /send_verification_code HTTP/1.1" 500 -
+backend-1  | Traceback (most recent call last):
+backend-1  |   File "/usr/local/lib/python3.12/site-packages/flask/app.py", line 1498, in __call__
+backend-1  |     return self.wsgi_app(environ, start_response)
+backend-1  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend-1  |   File "/usr/local/lib/python3.12/site-packages/flask/app.py", line 1476, in wsgi_app
+backend-1  |     response = self.handle_exception(e)
+backend-1  |                ^^^^^^^^^^^^^^^^^^^^^^^^
+backend-1  |   File "/usr/local/lib/python3.12/site-packages/flask_cors/extension.py", line 178, in wrapped_function
+backend-1  |     return cors_after_request(app.make_response(f(*args, **kwargs)))
+backend-1  |                                                 ^^^^^^^^^^^^^^^^^^^^
+backend-1  |   File "/usr/local/lib/python3.12/site-packages/flask/app.py", line 1473, in wsgi_app
+backend-1  |     response = self.full_dispatch_request()
+backend-1  |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend-1  |   File "/usr/local/lib/python3.12/site-packages/flask/app.py", line 882, in full_dispatch_request
+backend-1  |     rv = self.handle_user_exception(e)
+backend-1  |          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend-1  |   File "/usr/local/lib/python3.12/site-packages/flask_cors/extension.py", line 178, in wrapped_function
+backend-1  |     return cors_after_request(app.make_response(f(*args, **kwargs)))
+backend-1  |                                                 ^^^^^^^^^^^^^^^^^^^^
+backend-1  |   File "/usr/local/lib/python3.12/site-packages/flask/app.py", line 880, in full_dispatch_request
+backend-1  |     rv = self.dispatch_request()
+backend-1  |          ^^^^^^^^^^^^^^^^^^^^^^^
+backend-1  |   File "/usr/local/lib/python3.12/site-packages/flask/app.py", line 865, in dispatch_request
+backend-1  |     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+backend-1  |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+backend-1  |   File "/app/app/auth_routes.py", line 108, in send_verification_code
+backend-1  |     email_client.send_email(email, code)
+backend-1  |   File "/app/app/auth_routes.py", line 60, in send_email
+backend-1  |     self.server.sendemail(EMAIL_USER, to_email, message)
+backend-1  | AttributeError: 'SMTP' object has no attribute 'sendemail'. Did you mean: 'sendmail'?
 
